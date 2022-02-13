@@ -25,7 +25,7 @@ public:
     Model(Dataset,int);
     Model(std::vector<double>);
     void fit(double,int,double,double=1);
-    std::vector<double> predict();
+    double predict(double,double);
     void displayW();
     std::vector<double> getW();
 

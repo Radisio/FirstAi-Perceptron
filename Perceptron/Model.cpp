@@ -66,7 +66,7 @@ void Model::fit(double eta, int maxErrorAllowed,double seuil,double sigma) {
             {
                 ///Sortie du perceptron = somme de tous les wi.xi (x0 = seuil)
                 double potentiel = this->sum(i);
-                double y = potentiel>=0? 1:0;
+                double y = potentiel>0? 1:0;
                 double error = strtod(this->output[i].getData().c_str(),NULL) - y;
                 if(error!=0)
                 {
@@ -74,18 +74,22 @@ void Model::fit(double eta, int maxErrorAllowed,double seuil,double sigma) {
                     nbError++;
                 }
             }
+            std::cout<<"NBError = " << nbError<<std::endl;
         }
 
-
+        this->predictable= true;
     }
 
 }
 
-std::vector<double> Model::predict() {
+double Model::predict(double x1, double x2) {
+    double returnVal = 0;
     if(this->predictable){
-
+        returnVal = this->w[0];
+        returnVal += x1*this->w[1];
+        returnVal += x2*this->w[2];
     }
-    return std::vector<double>();
+    return returnVal>0?1:0;
 }
 
 double Model::sum(int i) {
