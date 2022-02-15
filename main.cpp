@@ -3,7 +3,7 @@
 #include "Perceptron/Model.h"
 int main() {
     std::cout<<"Coucou"<<std::endl;
-   Dataset data("E:\\ProjetPerso\\MyIALibrary\\datasetTest\\datasetAndDoor.csv",true,",",'.');
+   Dataset data("../datasetTest/datasetOrDoor.csv",true,",",'.');
     std::cout<<"YES"<<std::endl;
    data.displayAll();
 
