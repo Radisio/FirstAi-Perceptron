@@ -11,6 +11,8 @@ ModelBase::ModelBase(const std::vector<std::vector<Data>> &entry, const std::vec
     this->predictable=false;
     this->seuil=seuil;
     this->eta = eta;
+    this->nbColEntry = this->entry.size();
+
 }
 
 ModelBase::ModelBase(Dataset dataset, int resultCol,double eta, double seuil) {

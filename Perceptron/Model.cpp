@@ -11,12 +11,12 @@ Model::Model(Dataset dataset, int resultCol,double eta, double seuil): ModelBase
 
 Model::Model(std::vector<double> w): ModelBase(w){}
 
-void Model::fit(int maxErrorAllowed,double sigma) {
+void Model::fit(int maxErrorAllowed) {
     if(!this->predictable){
         ///Initialisation des poids synaptiques (mise à 0)
         for(int i = 0;i<this->nbColEntry+1; i++)
         {
-            w.push_back(Util::randomNormalLaw(0,sigma,0,1));
+            this->w.push_back(0.0);
         }
         int nbError = maxErrorAllowed+1;
         int nbOutput = this->output.size();

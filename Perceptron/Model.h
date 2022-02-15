@@ -19,8 +19,8 @@ public:
     Model(const std::vector<std::vector<Data>> &entry, const std::vector<Data> &output,double,double);
     Model(Dataset,int,double,double);
     Model(std::vector<double>);
-    void fit(int,double=1);
-    double predict(double,double);
+    void fit(int) override;
+    double predict(double,double) override;
 
 
 
