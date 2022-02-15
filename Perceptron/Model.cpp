@@ -4,58 +4,19 @@
 
 #include "Model.h"
 
-Model::Model(const std::vector<std::vector<Data>> &entry, const std::vector<Data> &output){
-    this->entry = entry;
-    this->output = output;
-    this->predictable=false;
+Model::Model(const std::vector<std::vector<Data>> &entry, const std::vector<Data> &output, double eta, double seuil)
+: ModelBase(entry, output, eta, seuil){}
 
-}
+Model::Model(Dataset dataset, int resultCol,double eta, double seuil): ModelBase(dataset, resultCol,eta,seuil){}
 
-Model::Model(Dataset dataset, int resultCol) {
-    ///Fill the entry vector
-    int nbRow, nbCol;
-    nbRow = dataset.getNbRow();
-    nbCol = dataset.getNbCol();
-    std::vector<std::vector<Data>> data = dataset.getData();
-    for(int i = 0; i< nbRow; i++)
-    {
-            std::vector<Data> vec;
-            for(int j = 0 ;j<nbCol;j++)
-            {
-                if(j==resultCol)
-                {
-                    this->output.push_back(data[i][j]);
-                }
-                else {
-                    vec.push_back(data[i][j]);
-                }
-            }
-            this->entry.push_back(vec);
+Model::Model(std::vector<double> w): ModelBase(w){}
 
-    }
-    if(!this->entry.empty() and !this->output.empty()) {
-        this->predictable = false;
-    }
-    else
-        throw std::runtime_error("Error while loading entry/output");
-    this->nbColEntry = nbCol-1;
-
-}
-
-Model::Model(std::vector<double> w) {
-    this->w = w;
-    this->predictable=true;
-}
-
-void Model::fit(double eta, int maxErrorAllowed,double seuil,double sigma) {
+void Model::fit(int maxErrorAllowed,double sigma) {
     if(!this->predictable){
-        this->seuil=seuil;
-        this->eta = eta;
         ///Initialisation des poids synaptiques (mise à 0)
         for(int i = 0;i<this->nbColEntry+1; i++)
         {
-            //w.push_back(Util::randomNormalLaw(0,sigma,0,1));
-            w.push_back(0.0);
+            w.push_back(Util::randomNormalLaw(0,sigma,0,1));
         }
         int nbError = maxErrorAllowed+1;
         int nbOutput = this->output.size();
@@ -66,7 +27,7 @@ void Model::fit(double eta, int maxErrorAllowed,double seuil,double sigma) {
             {
                 ///Sortie du perceptron = somme de tous les wi.xi (x0 = seuil)
                 double potentiel = this->sum(i);
-                double y = potentiel>0? 1:0;
+                double y = potentiel>0;
                 double error = strtod(this->output[i].getData().c_str(),NULL) - y;
                 if(error!=0)
                 {
@@ -89,7 +50,7 @@ double Model::predict(double x1, double x2) {
         returnVal += x1*this->w[1];
         returnVal += x2*this->w[2];
     }
-    return returnVal>0?1:0;
+    return returnVal>0;
 }
 
 double Model::sum(int i) {
@@ -109,15 +70,4 @@ void Model::correctW(int i,double error) {
     }
 }
 
-void Model::displayW() {
-    int size = this->w.size();
-    std::cout<<"Display W"<<std::endl;
-    for(int i = 0;i<size;i++)
-    {
-        std::cout<<"W["<<i<<"]:"<<this->w[i]<<std::endl;
-    }
-}
 
-std::vector<double> Model::getW() {
-    return this->w;
-}

@@ -11,8 +11,8 @@ int main() {
    data.displayAllDetailled();
 
    std::cout<<"Model"<<std::endl;
-   Model model(data,2);
-   model.fit(1,0,1);
+   Model model(data,2,1,1);
+   model.fit(0);
    model.displayW();
 
 

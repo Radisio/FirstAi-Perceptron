@@ -7,27 +7,22 @@
 #include <vector>
 #include "../AILibrary/Dataset/Data.h"
 #include "../AILibrary/Dataset/Dataset.h"
+#include "../AILibrary/ModelBase/ModelBase.h"
 #include <iostream>
-class Model {
+class Model : public ModelBase{
 private:
-    std::vector<double> w;
-    bool predictable;
-    std::vector<std::vector<Data>> entry;
-    int nbColEntry;
-    double seuil;
-    double eta;
-    std::vector<Data> output;
+
     double sum(int);
     void correctW(int,double);
 
 public:
-    Model(const std::vector<std::vector<Data>> &entry, const std::vector<Data> &output);
-    Model(Dataset,int);
+    Model(const std::vector<std::vector<Data>> &entry, const std::vector<Data> &output,double,double);
+    Model(Dataset,int,double,double);
     Model(std::vector<double>);
-    void fit(double,int,double,double=1);
+    void fit(int,double=1);
     double predict(double,double);
-    void displayW();
-    std::vector<double> getW();
+
+
 
 };
 
