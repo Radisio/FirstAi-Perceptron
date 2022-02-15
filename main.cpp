@@ -1,6 +1,6 @@
 #include <iostream>
 #include "AILibrary/Dataset/Dataset.h"
-#include "Perceptron/Model.h"
+#include "Perceptron/PerceptronV1Model.h"
 int main() {
     std::cout<<"Coucou"<<std::endl;
    Dataset data("../datasetTest/datasetOrDoor.csv",true,",",'.');
@@ -10,8 +10,8 @@ int main() {
    std::cout<<"DISPLAY DATA WITH DETAIL"<<std::endl;
    data.displayAllDetailled();
 
-   std::cout<<"Model"<<std::endl;
-   Model model(data,2,1,1);
+   std::cout<<"PerceptronV1Model"<<std::endl;
+   PerceptronV1Model model(data, 2, 1, 1);
    model.fit(0);
    model.displayW();
 

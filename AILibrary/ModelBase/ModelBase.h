@@ -20,6 +20,8 @@ protected:
     std::vector<Data> output;
 
     virtual void correctW(int,double){};
+    double evaluateY(int);
+
 
 public:
     ModelBase(const std::vector<std::vector<Data>> &entry, const std::vector<Data> &output,double,double);

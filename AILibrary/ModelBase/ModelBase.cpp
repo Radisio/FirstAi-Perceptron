@@ -62,6 +62,15 @@ void ModelBase::displayW() {
     }
 }
 
+double ModelBase::evaluateY(int i) {
+    double returnVal = this->seuil*this->w[0];
+    for(int j=1,k=0;j<=this->nbColEntry;j++,k++)
+    {
+        returnVal += strtod(this->entry[i][k].getData().c_str(),NULL) * this->w[j];
+    }
+    return returnVal;
+}
+
 void ModelBase::setEntry(const std::vector<std::vector<Data>> &entry) {
     ModelBase::entry = entry;
 }

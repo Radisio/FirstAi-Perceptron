@@ -14,6 +14,8 @@ public:
     static bool onlydigits(const std::string&, char );
 
     static double randomNormalLaw(double mean, double sigma,double min, double max);
+
+    static double randomNormalLaw(double mean, double sigma);
 };
 
 
