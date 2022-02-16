@@ -114,3 +114,12 @@ double ModelBase::getEta() const {
 const std::vector<Data> &ModelBase::getOutput() const {
     return output;
 }
+
+void ModelBase::correctW(int i, double error) {
+    std::cout<<"On corrige error : " << error << std::endl;
+    this->w[0]=this->w[0]+(this->eta*error* this->seuil);
+    for(int j=1,k=0;j<=this->nbColEntry;j++,k++)
+    {
+        this->w[j] =this->w[j]+(this->eta*error* strtod(this->entry[i][k].getData().c_str(),NULL));
+    }
+}

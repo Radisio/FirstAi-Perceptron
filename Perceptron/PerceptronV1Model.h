@@ -10,15 +10,11 @@
 #include "../AILibrary/ModelBase/ModelBase.h"
 #include <iostream>
 class PerceptronV1Model : public ModelBase{
-private:
-
-    void correctW(int,double) override;
-
 public:
     PerceptronV1Model(const std::vector<std::vector<Data>> &entry, const std::vector<Data> &output, double, double);
     PerceptronV1Model(Dataset, int, double, double);
     PerceptronV1Model(std::vector<double>);
-    void fit(int) override;
+    void fit(double) override;
     double predict(double,double) override;
 
 

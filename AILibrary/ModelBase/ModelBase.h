@@ -19,7 +19,7 @@ protected:
     double eta;
     std::vector<Data> output;
 
-    virtual void correctW(int,double){};
+    void correctW(int,double);
     double evaluateY(int);
 
 
@@ -30,7 +30,7 @@ public:
     void displayW();
     std::vector<double> getW();
 
-    virtual void fit(int) {}
+    virtual void fit(double) {}
     virtual double predict(double,double){return 0.0;}
 
     bool isPredictable() const;

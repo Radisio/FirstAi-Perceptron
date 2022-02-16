@@ -11,16 +11,17 @@ PerceptronV1Model::PerceptronV1Model(Dataset dataset, int resultCol, double eta,
 
 PerceptronV1Model::PerceptronV1Model(std::vector<double> w): ModelBase(w){}
 
-void PerceptronV1Model::fit(int maxErrorAllowed) {
+void PerceptronV1Model::fit(double maxErrorAllowed) {
     if(!this->predictable){
         ///Initialisation des poids synaptiques (mise à 0)
         for(int i = 0;i<this->nbColEntry+1; i++)
         {
-            this->w.push_back(Util::randomNormalLaw(0,1,0,1));
+            this->w.push_back(0.0);
         }
-        int nbError = maxErrorAllowed+1;
+        int nbErrorMax = int(maxErrorAllowed);
+        int nbError = nbErrorMax+1;
         int nbOutput = this->output.size();
-        while(nbError>maxErrorAllowed)
+        while(nbError>nbErrorMax)
         {
             nbError=0;
             for(int i = 0;i<nbOutput;i++)
@@ -50,17 +51,11 @@ double PerceptronV1Model::predict(double x1, double x2) {
         returnVal += x1*this->w[1];
         returnVal += x2*this->w[2];
     }
-    return returnVal>0;
+    return returnVal>=0;
 }
 
 
 
-void PerceptronV1Model::correctW(int i, double error) {
-    this->w[0]=this->w[0]+(this->eta*error* this->seuil);
-    for(int j=1,k=0;j<=this->nbColEntry;j++,k++)
-    {
-        this->w[j] =this->w[j]+(this->eta*error* strtod(this->entry[i][k].getData().c_str(),NULL));
-    }
-}
+
 
 
