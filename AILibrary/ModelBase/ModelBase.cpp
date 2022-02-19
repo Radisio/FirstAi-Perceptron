@@ -120,6 +120,7 @@ void ModelBase::correctW(int i, double error) {
     this->w[0]=this->w[0]+(this->eta*error* this->seuil);
     for(int j=1,k=0;j<=this->nbColEntry;j++,k++)
     {
+        ///w(t+1) = w(t)+ eta*error*xi
         this->w[j] =this->w[j]+(this->eta*error* strtod(this->entry[i][k].getData().c_str(),NULL));
     }
 }

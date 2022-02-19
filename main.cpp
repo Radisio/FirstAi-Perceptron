@@ -27,12 +27,16 @@ int main() {
 
 
    std::cout<<"PERCEPTRON V2 MODEL"<<std::endl;
-    Dataset dataV2("../datasetTest/datasetAndDoorV2.csv",true,",",'.');
-    PerceptronV2Model modelV2(dataV2,2,0.25,1,1,0);
-    modelV2.fit(0.126,10000);
+    Dataset dataV2("../datasetTest/datasetOrDoorV2.csv",true,",",'.');
+    PerceptronV2Model modelV2(dataV2,2,0.20,1,1,0);
+    modelV2.fit(0.4,10000);
     modelV2.displayW();
     std::cout<<"Is it predictable : " << modelV2.isPredictable()<<std::endl;
 
+    std::cout<<"1 and 1 gives = " << modelV2.predict(1,1)<<std::endl;
+    std::cout<<"0 and 1 gives = " << modelV2.predict(0,1)<<std::endl;
+    std::cout<<"1 and 0 gives = " << modelV2.predict(1,0)<<std::endl;
+    std::cout<<"0 and 0 gives = " << modelV2.predict(0,0)<<std::endl;
 
    return 0;
 }

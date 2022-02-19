@@ -19,7 +19,7 @@ protected:
     double eta;
     std::vector<Data> output;
 
-    void correctW(int,double);
+    virtual void correctW(int,double);
     double evaluateY(int);
 
 

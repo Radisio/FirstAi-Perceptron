@@ -14,16 +14,18 @@ private:
     int sigma;
     int mean;
     std::vector<double> Dw;
+    double Dwi;
+    void addDwi(int i,double error);
     void zeroDW();
 public:
     PerceptronV2Model(const Dataset &dataset, int resultCol, double eta, double seuil, double sigma = 1.0,double mean=0.0);
 
     void fit(double) override;
-    void fit(double,int);
+    void fit(double seuilMin,int maxIteration);
     double predict(double d, double d1) override;
 
 
-
+    void correctW(int i);
 };
 
 
