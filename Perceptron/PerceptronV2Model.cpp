@@ -11,6 +11,7 @@ PerceptronV2Model::PerceptronV2Model(const Dataset &dataset, int resultCol, doub
 : ModelBase(dataset, resultCol, eta, seuil) {
     this->sigma = sigma;
     this->mean = mean;
+    this->wGenerationType = RANDOM_NORMAL_LAW;
 }
 
 void PerceptronV2Model::fit(double seuilMin) {
@@ -21,11 +22,10 @@ void PerceptronV2Model::fit(double seuilMin, int maxIteration) {
     ///Instanciation poids synaptique
     for(int j = 0;j<this->nbColEntry+1;j++)
     {
-        this->w.push_back(Util::randomNormalLaw(this->mean, this->sigma));
+        this->w.push_back(WGeneratorFunction::randomNormalLaw(this->mean, this->sigma));
     }
     int nbIter = 0;
     double emoy;
-    double test=0.0;
     int nbOutput = this->output.size();
     ///Instanciation Dwi
     this->zeroDW();
@@ -56,7 +56,7 @@ void PerceptronV2Model::zeroDW() {
     this->Dw.clear();
     for(int i = 0; i<this->nbColEntry+1;i++)
     {
-        this->Dw.push_back(0.0);
+        this->Dw.push_back(WGeneratorFunction::only0());
     }
 }
 

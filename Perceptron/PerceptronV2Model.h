@@ -7,7 +7,7 @@
 
 
 #include "../AILibrary/ModelBase/ModelBase.h"
-
+#include "../AILibrary/ModelBase/WGeneratorFunction.h"
 class PerceptronV2Model : public ModelBase {
 private:
 

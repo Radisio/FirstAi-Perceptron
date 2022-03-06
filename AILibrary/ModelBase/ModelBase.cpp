@@ -12,6 +12,7 @@ ModelBase::ModelBase(const std::vector<std::vector<Data>> &entry, const std::vec
     this->seuil=seuil;
     this->eta = eta;
     this->nbColEntry = this->entry.size();
+    this->wGenerationType = ONLY_0;
 
 }
 
@@ -123,4 +124,12 @@ void ModelBase::correctW(int i, double error) {
         ///w(t+1) = w(t)+ eta*error*xi
         this->w[j] =this->w[j]+(this->eta*error* strtod(this->entry[i][k].getData().c_str(),NULL));
     }
+}
+
+unsigned short ModelBase::getWGenerationType() const {
+    return wGenerationType;
+}
+
+void ModelBase::setWGenerationType(unsigned short wGenerationType) {
+    ModelBase::wGenerationType = wGenerationType;
 }

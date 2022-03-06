@@ -9,6 +9,7 @@
 #include "../Dataset/Data.h"
 #include "../Dataset/Dataset.h"
 #include <functional>
+#include "WGeneratorFunction.h"
 class ModelBase {
 protected:
     std::vector<double> w;
@@ -18,7 +19,7 @@ protected:
     double seuil;
     double eta;
     std::vector<Data> output;
-
+    unsigned short wGenerationType;
     virtual void correctW(int,double);
     double evaluateY(int);
 
@@ -52,6 +53,10 @@ public:
     void setEta(double eta);
 
     void setOutput(const std::vector<Data> &output);
+
+    unsigned short getWGenerationType() const;
+
+    void setWGenerationType(unsigned short wGenerationType);
 
 };
 
