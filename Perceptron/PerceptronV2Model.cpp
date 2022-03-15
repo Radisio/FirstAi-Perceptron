@@ -34,7 +34,6 @@ void PerceptronV2Model::fit(double seuilMin, int maxIteration) {
         for(int i = 0;i<nbOutput;i++) {
             double y = this->evaluateY(i);
             double error = strtod(this->output[i].getData().c_str(), NULL) - y;
-            std::cout << "Error : " << error << std::endl;
             addDwi(i,error);
             emoy += (error * error) / 2;
 
@@ -46,7 +45,6 @@ void PerceptronV2Model::fit(double seuilMin, int maxIteration) {
         }
         emoy /= nbOutput;
         nbIter++;
-        std::cout<<"Emoy : " << emoy << " seuilMin : " << seuilMin<<std::endl;
     }while(emoy>seuilMin && nbIter<maxIteration);
     if(emoy<seuilMin)
         this->predictable=true;

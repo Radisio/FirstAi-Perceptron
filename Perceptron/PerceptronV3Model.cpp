@@ -29,13 +29,11 @@ void PerceptronV3Model::fit(double seuilMin, int maxIteration) {
         for(int i = 0;i<nbOutput;i++) {
             double y = this->evaluateY(i);
             double error = strtod(this->output[i].getData().c_str(), NULL) - y;
-            std::cout << "Error : " << error << std::endl;
             emoy += (error * error) / 2;
             correctW(i, error);
         }
         emoy /= nbOutput;
         nbIter++;
-        std::cout<<"Emoy : " << emoy << " seuilMin : " << seuilMin<<std::endl;
     }while(emoy>seuilMin && nbIter<maxIteration);
     if(emoy<seuilMin)
         this->predictable=true;
@@ -50,12 +48,4 @@ double PerceptronV3Model::predict(double x1, double x2) {
         returnVal += x2*this->w[2];
     }
     return returnVal>=0;
-}
-
-void PerceptronV3Model::correctW(int i, double error) {
-    this->w[0]=this->w[0]+(this->eta*error* this->seuil);
-    for(int j=1;j<=this->nbColEntry;j++)
-    {
-        this->w[j] =this->w[j]+this->eta*error;
-    }
 }

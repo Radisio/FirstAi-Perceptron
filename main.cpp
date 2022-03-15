@@ -2,6 +2,7 @@
 #include "AILibrary/Dataset/Dataset.h"
 #include "Perceptron/PerceptronV1Model.h"
 #include "Perceptron/PerceptronV2Model.h"
+#include "Perceptron/PerceptronV3Model.h"
 
 int main() {
     std::cout<<"Coucou"<<std::endl;
@@ -38,5 +39,17 @@ int main() {
     std::cout<<"1 and 0 gives = " << modelV2.predict(1,0)<<std::endl;
     std::cout<<"0 and 0 gives = " << modelV2.predict(0,0)<<std::endl;
 
+
+    std::cout<<"PERCEPTRON V3 MODEL"<<std::endl;
+    Dataset dataV3("../datasetTest/datasetOrDoorV2.csv",true,",",'.');
+    PerceptronV3Model modelV3(dataV3,2,0.20,1,1,0);
+    modelV3.fit(0.2,10000);
+    modelV3.displayW();
+    std::cout<<"Is it predictable : " << modelV3.isPredictable()<<std::endl;
+
+    std::cout<<"1 and 1 gives = " << modelV3.predict(1,1)<<std::endl;
+    std::cout<<"0 and 1 gives = " << modelV3.predict(0,1)<<std::endl;
+    std::cout<<"1 and 0 gives = " << modelV3.predict(1,0)<<std::endl;
+    std::cout<<"0 and 0 gives = " << modelV3.predict(0,0)<<std::endl;
    return 0;
 }

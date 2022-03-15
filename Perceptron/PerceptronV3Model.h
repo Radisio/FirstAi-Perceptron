@@ -21,7 +21,6 @@ public:
     double predict(double d, double d1) override;
 
 
-void correctW(int i, double error);
 };
 
 #endif //MYIALIBRARY_PERCEPTRONV3MODEL_H
