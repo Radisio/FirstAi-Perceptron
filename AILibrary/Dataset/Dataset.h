@@ -36,6 +36,10 @@ public:
     int getNbCol();
 
     std::vector<std::vector<Data>> getData();
+    std::vector<std::vector<Data>> getColumns(int start, int end);
+    std::vector<Data> getColumn(int col);
+
+
 
 };
 

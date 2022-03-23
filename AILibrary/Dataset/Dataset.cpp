@@ -172,3 +172,28 @@ int Dataset::getNbCol() {
 std::vector<std::vector<Data>> Dataset::getData() {
     return this->data;
 }
+
+std::vector<std::vector<Data>> Dataset::getColumns(int start, int end) {
+    std::vector<std::vector<Data>> columnsReturned;
+    std::vector<Data> tmp;
+    for(int i = 0;i<this->nbRow;i++)
+    {
+        tmp.clear();
+        for(int j =start;j<=end;j++)
+        {
+            tmp.push_back(this->data[i][j]);
+        }
+        columnsReturned.push_back(tmp);
+    }
+    return columnsReturned;
+}
+
+std::vector<Data> Dataset::getColumn(int col) {
+    std::vector<Data> columnReturned;
+    for(int i =0;i<this->nbRow;i++)
+    {
+        columnReturned.push_back(this->data[i][col]);
+    }
+    return columnReturned;
+}
+

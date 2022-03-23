@@ -3,8 +3,11 @@
 #include "Perceptron/PerceptronV1Model.h"
 #include "Perceptron/PerceptronV2Model.h"
 #include "Perceptron/PerceptronV3Model.h"
+#include "AILibrary/Model/Model.h"
+#include "AILibrary/DerivedModel/SimpleModel.h"
 
 int main() {
+    /*
     std::cout<<"Coucou"<<std::endl;
    Dataset data("../datasetTest/datasetAndDoor.csv",true,",",'.');
     std::cout<<"YES"<<std::endl;
@@ -50,6 +53,14 @@ int main() {
     std::cout<<"1 and 1 gives = " << modelV3.predict(1,1)<<std::endl;
     std::cout<<"0 and 1 gives = " << modelV3.predict(0,1)<<std::endl;
     std::cout<<"1 and 0 gives = " << modelV3.predict(1,0)<<std::endl;
-    std::cout<<"0 and 0 gives = " << modelV3.predict(0,0)<<std::endl;
+    std::cout<<"0 and 0 gives = " << modelV3.predict(0,0)<<std::endl;*/
+    Dataset data("../datasetTest/datasetAndDoor.csv",true,",",'.');
+    std::vector<std::vector<Data>> entry = data.getColumns(0,1);
+    std::vector<Data> output = data.getColumn(2);
+    std::vector<Layer> layers({Layer(1)});
+    SimpleModel model(entry,layers,output,1,0);
+    model.initNbSynapticWeight();
+    model.debugSynapseWeight();
+    model.fit();
    return 0;
 }

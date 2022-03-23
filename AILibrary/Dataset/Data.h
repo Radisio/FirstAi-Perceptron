@@ -20,6 +20,9 @@ class Data {
 
        void setType(int);
        void setData(std::string);
+
+       double getNumericData();
+       std::string getFactorData();
 };
 
 

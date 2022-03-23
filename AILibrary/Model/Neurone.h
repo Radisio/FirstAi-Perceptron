@@ -10,10 +10,19 @@
  */
 
 /// Evaluation de la sortie propre au neurone
+#include <vector>
+#include "../Dataset/Data.h"
 
 class Neurone {
+private:
+    std::vector<double> synapse;
 
-
+public:
+    Neurone();
+    void setNbSynapse(int);
+    Data evaluateOutput(std::vector<Data>);
+    std::vector<double> getSynapse();
+    void correction(std::vector<Data>,double,double);
 };
 
 
