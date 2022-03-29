@@ -2,9 +2,9 @@
 // Created by ericp on 22-03-22.
 //
 
-#include "SimpleModel.h"
+#include "PerceptronModel.h"
 
-void SimpleModel::fit() {
+void PerceptronModel::fit() {
     int nbErrorMax = this->maxErrorAllowed;
     int nbError = nbErrorMax+1;
     int nbOutput = this->output.size();
@@ -30,7 +30,7 @@ void SimpleModel::fit() {
 }
 
 
-void SimpleModel::correction(std::vector<Data> output,double error) {
+void PerceptronModel::correction(std::vector<Data> output, double error) {
     int nbLayer = this->layers.size();
     for(int i =0;i<nbLayer;i++)
     {
@@ -40,7 +40,20 @@ void SimpleModel::correction(std::vector<Data> output,double error) {
 
 }
 
-SimpleModel::SimpleModel(std::vector<std::vector<Data>> entry, std::vector<Layer> layers, std::vector<Data> output, double eta,
-                         int maxErrorAllowed) : Model(entry, layers, output, eta){
+PerceptronModel::PerceptronModel(std::vector<std::vector<Data>> entry, std::vector<Layer> layers, std::vector<Data> output, double eta,
+                                 int maxErrorAllowed) : Model(entry, layers, output, eta){
     this->maxErrorAllowed = maxErrorAllowed;
+}
+
+std::vector<Data> PerceptronModel::predict(std::vector<Data> vector) {
+    std::vector<Data> response= Model::predict(vector);
+    int size = response.size();
+    for(int i =0;i<size;i++)
+    {
+        response[i].setData(std::to_string(response[i].getNumericData()>=0));
+    }
+    return response;
+}
+
+PerceptronModel::PerceptronModel(std::string filename) : Model(filename){
 }

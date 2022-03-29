@@ -2,6 +2,7 @@
 // Created by ericp on 15-03-22.
 //
 
+#include <iostream>
 #include "Neurone.h"
 Neurone::Neurone() {
 
@@ -21,7 +22,7 @@ Data Neurone::evaluateOutput(std::vector<Data> entry) {
     int nbCol = entry.size();
     for(int j=1,k=0;j<=nbCol;j++,k++)
     {
-        returnVal += strtod(entry[k].getData().c_str(),NULL) * this->synapse[j];
+        returnVal += entry[k].getNumericData() * this->synapse[j];
     }
     return Data(DATA_TYPE_NUMERIC,std::to_string(returnVal));
 }
@@ -43,5 +44,9 @@ void Neurone::correction(std::vector<Data> entry,double eta, double error) {
         ///w(t+1) = w(t)+ eta*error*xi
         this->synapse[j] =this->synapse[j]+(eta*error* entry[k].getNumericData());
     }
+}
+
+Neurone::Neurone(std::vector<double> synapses) {
+    this->synapse = synapses;
 }
 

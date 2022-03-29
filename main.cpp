@@ -4,8 +4,8 @@
 #include "Perceptron/PerceptronV2Model.h"
 #include "Perceptron/PerceptronV3Model.h"
 #include "AILibrary/Model/Model.h"
-#include "AILibrary/DerivedModel/SimpleModel.h"
-
+#include "AILibrary/DerivedModel/PerceptronModel.h"
+#include <fstream>
 int main() {
     /*
     std::cout<<"Coucou"<<std::endl;
@@ -58,9 +58,22 @@ int main() {
     std::vector<std::vector<Data>> entry = data.getColumns(0,1);
     std::vector<Data> output = data.getColumn(2);
     std::vector<Layer> layers({Layer(1)});
-    SimpleModel model(entry,layers,output,1,0);
+    PerceptronModel model(entry, layers, output, 1, 0);
     model.initNbSynapticWeight();
+    model.debugLog();
     model.debugSynapseWeight();
     model.fit();
+    model.save("E:\\ProjetPerso\\MyIALibrary\\SavedModel\\MyFirstModel.csv");
+    std::vector<Data> answer = model.predict(std::vector<Data>({Data(DATA_TYPE_NUMERIC,"1"),Data(DATA_TYPE_NUMERIC,"1")}));
+    std::cout<<"Answer = " <<answer[0].getNumericData()<<std::endl;
+    std::cout<<"-----------------"<<std::endl;
+    PerceptronModel model1("E:\\ProjetPerso\\MyIALibrary\\SavedModel\\MyFirstModel.csv");
+    model1.debugLog();
+    model1.debugSynapseWeight();
+
+
+
+
+
    return 0;
 }

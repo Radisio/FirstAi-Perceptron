@@ -9,17 +9,21 @@
 #include "../Dataset/Data.h"
 #include "Neurone.h"
 #include <iostream>
+#include <fstream>
 class Layer {
 private:
     int nbNeurone;
     std::vector<Neurone> neurones;
+
 public:
     Layer(int);
+    Layer(std::vector<Neurone>);
     void setNbSynapse(int);
     int getNbNeurone();
     std::vector<Data> evaluateOutput(std::vector<Data> entry);
-    void debugSynapseWeight();
+    void debugSynapseWeight(std::ostream*);
     void correction(std::vector<Data>,double,double);
+    void save(std::ofstream*);
 };
 
 

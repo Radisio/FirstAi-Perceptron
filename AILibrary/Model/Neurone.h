@@ -19,6 +19,7 @@ private:
 
 public:
     Neurone();
+    Neurone(std::vector<double>);
     void setNbSynapse(int);
     Data evaluateOutput(std::vector<Data>);
     std::vector<double> getSynapse();
