@@ -4,11 +4,12 @@
 
 #include "PerceptronModel.h"
 
-void PerceptronModel::fit() {
+void PerceptronModel::fit(int maxIteration) {
     int nbErrorMax = this->maxErrorAllowed;
     int nbError = nbErrorMax+1;
     int nbOutput = this->output.size();
-    while(nbError>nbErrorMax)
+    int nbIter = 0;
+    while((nbError>nbErrorMax) && (nbIter<maxIteration))
     {
         nbError=0;
         for(int i = 0;i<nbOutput;i++)
@@ -25,16 +26,17 @@ void PerceptronModel::fit() {
             this->debugSynapseWeight();
         }
         std::cout<<"NBError = " << nbError<<std::endl;
+        nbIter++;
     }
 
 }
 
 
-void PerceptronModel::correction(std::vector<Data> output, double error) {
+void PerceptronModel::correction(std::vector<Data> line, double error) {
     int nbLayer = this->layers.size();
     for(int i =0;i<nbLayer;i++)
     {
-        this->layers[i].correction(output,this->eta,error);
+        this->layers[i].correction(line,this->eta,error);
     }
 
 

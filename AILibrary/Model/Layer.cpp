@@ -46,10 +46,10 @@ void Layer::debugSynapseWeight(std::ostream* fp) {
     }
 }
 
-void Layer::correction(std::vector<Data> output,double eta,double error) {
+void Layer::correction(std::vector<Data> line,double eta,double error) {
     for (int i =0;i<this->nbNeurone;i++)
     {
-        this->neurones[i].correction(output,eta,error);
+        this->neurones[i].correction(line,eta,error);
     }
 }
 
@@ -68,4 +68,26 @@ void Layer::save(std::ofstream* out) {
 Layer::Layer(std::vector<Neurone> neurones) {
     this->neurones = neurones;
     this->nbNeurone = neurones.size();
+}
+
+void Layer::setDwToNeurone(std::vector<Data> line,double eta, double error) {
+    for (int i =0;i<this->nbNeurone;i++)
+    {
+        this->neurones[i].setDwVec(line,eta,error);
+    }
+}
+
+void Layer::correctionWDW() {
+    for (int i =0;i<this->nbNeurone;i++)
+    {
+        this->neurones[i].correctionWDw();
+    }
+}
+
+void Layer::setZeroDw() {
+    for (int i =0;i<this->nbNeurone;i++)
+    {
+        this->neurones[i].zeroDw();
+    }
+
 }

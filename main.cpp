@@ -5,6 +5,8 @@
 #include "Perceptron/PerceptronV3Model.h"
 #include "AILibrary/Model/Model.h"
 #include "AILibrary/DerivedModel/PerceptronModel.h"
+#include "AILibrary/DerivedModel/DGModel.h"
+#include "AILibrary/DerivedModel/AdalineModel.h"
 #include <fstream>
 int main() {
     /*
@@ -54,7 +56,11 @@ int main() {
     std::cout<<"0 and 1 gives = " << modelV3.predict(0,1)<<std::endl;
     std::cout<<"1 and 0 gives = " << modelV3.predict(1,0)<<std::endl;
     std::cout<<"0 and 0 gives = " << modelV3.predict(0,0)<<std::endl;*/
-    Dataset data("../datasetTest/datasetAndDoor.csv",true,",",'.');
+
+
+
+
+   /* Dataset data("../datasetTest/datasetAndDoor.csv",true,",",'.');
     std::vector<std::vector<Data>> entry = data.getColumns(0,1);
     std::vector<Data> output = data.getColumn(2);
     std::vector<Layer> layers({Layer(1)});
@@ -70,10 +76,32 @@ int main() {
     PerceptronModel model1("E:\\ProjetPerso\\MyIALibrary\\SavedModel\\MyFirstModel.csv");
     model1.debugLog();
     model1.debugSynapseWeight();
+    std::cout<<"Descente du gradient"<<std::endl;
+    Dataset dataV2("../datasetTest/datasetOrDoorV2.csv",true,",",'.');
+    std::vector<std::vector<Data>> entry2 = dataV2.getColumns(0,1);
+    std::vector<Data> output2 = dataV2.getColumn(2);
+    std::vector<Layer> layers2({Layer(1)});
+    DGModel modelDG(entry2, layers2, output2, 0.2, 0.1250001);
+    modelDG.initNbSynapticWeight();
+    modelDG.debugLog();
+    modelDG.debugSynapseWeight();
+    modelDG.fit(10000);
+    modelDG.debugSynapseWeight();
+    std::vector<Data> answer2 = modelDG.predict(std::vector<Data>({Data(DATA_TYPE_NUMERIC,"1"),Data(DATA_TYPE_NUMERIC,"1")}));
+    std::cout<<"Answer = " <<answer2[0].getNumericData()<<std::endl;*/
+    std::cout<<"Adaline"<<std::endl;
+    Dataset dataV3("../datasetTest/datasetAndDoorV2.csv",true,",",'.');
+    std::vector<std::vector<Data>> entry3 = dataV3.getColumns(0,1);
+    std::vector<Data> output3 = dataV3.getColumn(2);
+    std::vector<Layer> layers3({Layer(1)});
+    AdalineModel modelAda(entry3, layers3, output3, 0.03, 0.132);
+    modelAda.initNbSynapticWeight();
+    modelAda.debugLog();
+    modelAda.debugSynapseWeight();
+    modelAda.fit(10000);
+    modelAda.debugSynapseWeight();
+    std::vector<Data> answer3 = modelAda.predict(std::vector<Data>({Data(DATA_TYPE_NUMERIC,"1"),Data(DATA_TYPE_NUMERIC,"1")}));
+    std::cout<<"Answer = " <<answer3[0].getNumericData()<<std::endl;
 
-
-
-
-
-   return 0;
+    return 0;
 }

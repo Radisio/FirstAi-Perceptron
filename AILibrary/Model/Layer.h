@@ -23,7 +23,10 @@ public:
     std::vector<Data> evaluateOutput(std::vector<Data> entry);
     void debugSynapseWeight(std::ostream*);
     void correction(std::vector<Data>,double,double);
+    void correctionWDW();
+    void setZeroDw();
     void save(std::ofstream*);
+    void setDwToNeurone(std::vector<Data>,double,double);
 };
 
 

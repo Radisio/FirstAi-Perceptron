@@ -12,7 +12,7 @@ private:
 public:
     PerceptronModel(std::vector<std::vector<Data>>, std::vector<Layer>, std::vector<Data> output, double eta, int maxErrorAllowed);
     PerceptronModel(std::string);
-    void fit() override;
+    void fit(int=1000) override;
 
     void correction(std::vector<Data>,double) override;
 

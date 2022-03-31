@@ -16,14 +16,18 @@
 class Neurone {
 private:
     std::vector<double> synapse;
+    std::vector<double> Dw;
 
 public:
     Neurone();
     Neurone(std::vector<double>);
     void setNbSynapse(int);
+    void zeroDw();
     Data evaluateOutput(std::vector<Data>);
     std::vector<double> getSynapse();
     void correction(std::vector<Data>,double,double);
+    void setDwVec(std::vector<Data>,double,double);
+    void correctionWDw();
 };
 
 

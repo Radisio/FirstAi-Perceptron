@@ -124,6 +124,15 @@ void Model::readLayersInFile(std::string filename) {
     }
 }
 
+void Model::zeroDw() {
+    int nbLayer = this->layers.size();
+    for(int i =0;i<nbLayer;i++)
+    {
+        this->layers[i].setZeroDw();
+    }
+
+}
+
 
 
 
