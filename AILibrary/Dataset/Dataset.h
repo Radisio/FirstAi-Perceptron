@@ -37,7 +37,7 @@ public:
 
     std::vector<std::vector<Data>> getData();
     std::vector<std::vector<Data>> getColumns(int start, int end);
-    std::vector<Data> getColumn(int col);
+    std::vector<std::vector<Data>> getColumn(int col);
 
 
 

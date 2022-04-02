@@ -7,22 +7,27 @@
 void PerceptronModel::fit(int maxIteration) {
     int nbErrorMax = this->maxErrorAllowed;
     int nbError = nbErrorMax+1;
-    int nbOutput = this->output.size();
+    int nbExample = this->output.size();
+    int nbOutput = this->output[0].size();
     int nbIter = 0;
     while((nbError>nbErrorMax) && (nbIter<maxIteration))
     {
         nbError=0;
-        for(int i = 0;i<nbOutput;i++)
+        for(int i = 0; i < nbExample; i++)
         {
-            ///Sortie du perceptron = somme de tous les wi.xi (x0 = seuil)
-            double potentiel = this->evaluateOutput(this->entry[i])[0].getNumericData();
-            double y = potentiel>=0;
-            double error = this->eta*(this->output[i].getNumericData() - y);
-            if(error!=0)
+            for(int j=0;j<nbOutput;j++)
             {
-                this->correction(this->entry[i],error);
-                nbError++;
+                ///Sortie du perceptron = somme de tous les wi.xi (x0 = seuil)
+                double potentiel = this->evaluateOutput(this->entry[i])[0].getNumericData();
+                double y = potentiel>=0;
+                double error = this->eta*(this->output[i][0].getNumericData() - y);
+                if(error!=0)
+                {
+                    this->correction(this->entry[i],error);
+                    nbError++;
+                }
             }
+
             this->debugSynapseWeight();
         }
         std::cout<<"NBError = " << nbError<<std::endl;
@@ -42,7 +47,7 @@ void PerceptronModel::correction(std::vector<Data> line, double error) {
 
 }
 
-PerceptronModel::PerceptronModel(std::vector<std::vector<Data>> entry, std::vector<Layer> layers, std::vector<Data> output, double eta,
+PerceptronModel::PerceptronModel(std::vector<std::vector<Data>> entry, std::vector<Layer> layers, std::vector<std::vector<Data>> output, double eta,
                                  int maxErrorAllowed) : Model(entry, layers, output, eta){
     this->maxErrorAllowed = maxErrorAllowed;
 }

@@ -23,6 +23,7 @@ public:
     std::vector<Data> evaluateOutput(std::vector<Data> entry);
     void debugSynapseWeight(std::ostream*);
     void correction(std::vector<Data>,double,double);
+    void correction(std::vector<Data>,double,double,int);
     void correctionWDW();
     void setZeroDw();
     void save(std::ofstream*);

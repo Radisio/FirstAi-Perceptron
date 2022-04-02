@@ -5,12 +5,13 @@
 #include <fstream>
 #include "Model.h"
 
-Model::Model(std::vector<std::vector<Data>> entry, std::vector<Layer> layers, std::vector<Data> output, double eta) {
+Model::Model(std::vector<std::vector<Data>> entry, std::vector<Layer> layers, std::vector<std::vector<Data>> output, double eta) {
     this->entry = entry;
     this->layers = layers;
     this->output = output;
     this->eta = eta;
     fp = NULL;
+    this->seuil = new SeuilIdentite();
 }
 
 Model::~Model(){
@@ -19,6 +20,10 @@ Model::~Model(){
         delete this->fp;
     }
     this->fp =NULL;
+    if(this->seuil!=NULL)
+    {
+        delete this->seuil;
+    }
 }
 
 void Model::initNbSynapticWeight() {
@@ -76,7 +81,18 @@ std::vector<Data> Model::predict(std::vector<Data> singleEntry) {
     Util::writeLogEndline(this->fp,"Predict");
     return evaluateOutput(std::move(singleEntry));
 }
+std::vector<Data> Model::predictWithSeuil(std::vector<Data> singleEntry) {
+    Util::writeLogEndline(this->fp,"Predict with seuil");
+    std::vector<Data> out;
+    std::vector<Data> result = evaluateOutput(singleEntry);
+    int size = result.size();
 
+    for(int i =0;i<size;i++)
+    {
+        out.push_back(Data(DATA_TYPE_NUMERIC,std::to_string(this->seuil->seuil(result[i].getNumericData()))));
+    }
+    return out;
+}
 void Model::save(std::string filepath) {
     std::ofstream *out = new std::ofstream(filepath.c_str(), std::ios::trunc);
     if(out->is_open())
@@ -132,6 +148,22 @@ void Model::zeroDw() {
     }
 
 }
+
+bool Model::modelValid() {
+    ///Vérifie que le nombre de sortie par itération soit égale au nombre de neurone de la couche de sortie
+    int lastLayer = this->layers.size()-1;
+    return this->layers[lastLayer].getNbNeurone()==this->output[0].size();
+}
+
+void Model::setSeuil(Seuil* seuil) {
+    if(this->seuil!=NULL)
+    {
+        delete this->seuil;
+    }
+    this->seuil = seuil;
+}
+
+
 
 
 

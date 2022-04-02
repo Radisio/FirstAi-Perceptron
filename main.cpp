@@ -8,6 +8,8 @@
 #include "AILibrary/DerivedModel/DGModel.h"
 #include "AILibrary/DerivedModel/AdalineModel.h"
 #include <fstream>
+//#include "matplotlibcpp.h"
+
 int main() {
     /*
     std::cout<<"Coucou"<<std::endl;
@@ -88,20 +90,31 @@ int main() {
     modelDG.fit(10000);
     modelDG.debugSynapseWeight();
     std::vector<Data> answer2 = modelDG.predict(std::vector<Data>({Data(DATA_TYPE_NUMERIC,"1"),Data(DATA_TYPE_NUMERIC,"1")}));
-    std::cout<<"Answer = " <<answer2[0].getNumericData()<<std::endl;*/
+    std::cout<<"Answer = " <<answer2[0].getNumericData()<<std::endl;
     std::cout<<"Adaline"<<std::endl;
     Dataset dataV3("../datasetTest/datasetAndDoorV2.csv",true,",",'.');
     std::vector<std::vector<Data>> entry3 = dataV3.getColumns(0,1);
-    std::vector<Data> output3 = dataV3.getColumn(2);
+    std::vector<std::vector<Data>> output3 = dataV3.getColumn(2);
     std::vector<Layer> layers3({Layer(1)});
-    AdalineModel modelAda(entry3, layers3, output3, 0.03, 0.132);
+    AdalineModel modelAda(entry3, layers3, output3, 0.03, 0.134);
     modelAda.initNbSynapticWeight();
     modelAda.debugLog();
     modelAda.debugSynapseWeight();
     modelAda.fit(10000);
     modelAda.debugSynapseWeight();
-    std::vector<Data> answer3 = modelAda.predict(std::vector<Data>({Data(DATA_TYPE_NUMERIC,"1"),Data(DATA_TYPE_NUMERIC,"1")}));
+    std::vector<Data> answer3 = modelAda.predictWithSeuil(std::vector<Data>({Data(DATA_TYPE_NUMERIC,"1"),Data(DATA_TYPE_NUMERIC,"1")}));
     std::cout<<"Answer = " <<answer3[0].getNumericData()<<std::endl;
-
+*/
+    std::cout<<"Adaline mono couche"<<std::endl;
+    Dataset dataV4("../datasetTest/table_3_1.csv",true,",",'.');
+    std::vector<std::vector<Data>> entry4 = dataV4.getColumns(0,1);
+    std::vector<std::vector<Data>> output4 = dataV4.getColumns(2,4);
+    std::vector<Layer> layers4({Layer(3)});
+    AdalineModel modelAda2(entry4, layers4, output4, 0.03);
+    modelAda2.initNbSynapticWeight();
+    modelAda2.debugLog();
+    modelAda2.debugSynapseWeight();
+    modelAda2.fit(10000);
+    modelAda2.debugSynapseWeight();
     return 0;
 }

@@ -11,20 +11,24 @@
 #include <vector>
 #include "../Dataset/Data.h"
 #include "Layer.h"
+#include "../Seuil/Seuil.h"
 #include <iostream>
+#include "../Seuil/SeuilIdentite.h"
 
 class Model {
 protected:
     std::ostream* fp;
     std::vector<std::vector<Data>> entry;
     std::vector<Layer> layers;
-    std::vector<Data> output;
+    std::vector<std::vector<Data>> output;
 
     std::vector<Data> evaluateOutput(std::vector<Data>);
     double eta;
     void readLayersInFile(std::string);
+    bool stopWhenNoError;
+    Seuil* seuil;
 public:
-    Model(std::vector<std::vector<Data>>, std::vector<Layer>, std::vector<Data> output, double eta);
+    Model(std::vector<std::vector<Data>>, std::vector<Layer>, std::vector<std::vector<Data>> output, double eta);
     Model(std::string filename);
     ~Model();
 
@@ -34,9 +38,11 @@ public:
     virtual void fit(int=1000)=0;
     void debugLog(std::string="stdout");
     virtual std::vector<Data> predict(std::vector<Data>);
+    virtual std::vector<Data> predictWithSeuil(std::vector<Data>);
     void zeroDw();
     void save(std::string);
-
+    bool modelValid();
+    void setSeuil(Seuil*);
 
 
 };

@@ -10,7 +10,7 @@ class PerceptronModel: public Model {
 private:
     int maxErrorAllowed;
 public:
-    PerceptronModel(std::vector<std::vector<Data>>, std::vector<Layer>, std::vector<Data> output, double eta, int maxErrorAllowed);
+    PerceptronModel(std::vector<std::vector<Data>>, std::vector<Layer>, std::vector<std::vector<Data>> output, double eta, int maxErrorAllowed);
     PerceptronModel(std::string);
     void fit(int=1000) override;
 

@@ -188,11 +188,11 @@ std::vector<std::vector<Data>> Dataset::getColumns(int start, int end) {
     return columnsReturned;
 }
 
-std::vector<Data> Dataset::getColumn(int col) {
-    std::vector<Data> columnReturned;
+std::vector<std::vector<Data>> Dataset::getColumn(int col) {
+    std::vector<std::vector<Data>> columnReturned;
     for(int i =0;i<this->nbRow;i++)
     {
-        columnReturned.push_back(this->data[i][col]);
+        columnReturned.push_back({this->data[i][col]});
     }
     return columnReturned;
 }

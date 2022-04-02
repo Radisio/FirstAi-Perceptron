@@ -8,7 +8,7 @@ DGModel::DGModel(std::string filename) : Model(filename) {
 
 }
 
-DGModel::DGModel(std::vector<std::vector<Data>> entry, std::vector<Layer> layers, std::vector<Data> output, double eta, double seuilMin) : Model(entry,layers,output,eta){
+DGModel::DGModel(std::vector<std::vector<Data>> entry, std::vector<Layer> layers, std::vector<std::vector<Data>> output, double eta, double seuilMin) : Model(entry,layers,output,eta){
     this->seuilMin= seuilMin;
 }
 
@@ -27,9 +27,9 @@ void DGModel::fit(int maxIteration) {
         zeroDw();
         for(int i = 0;i<nbOutput;i++) {
             double y = this->evaluateOutput(this->entry[i])[0].getNumericData();
-            double error = this->output[i].getNumericData() - y;
+            double error = this->output[i][0].getNumericData() - y;
             this->layers[lastLayer].setDwToNeurone(this->entry[i],this->eta,error);
-            std::cout<<"Sortie : " << y << " sortie attendue : " << this->output[i].getData()<<std::endl;
+            std::cout<<"Sortie : " << y << " sortie attendue : " << this->output[i][0].getData()<<std::endl;
             std::cout<<"error " << error <<std::endl;
 
             emoy += (error * error) / 2;

@@ -12,7 +12,7 @@ class DGModel: public Model {
 private:
     double seuilMin;
 public:
-    DGModel(std::vector<std::vector<Data>>, std::vector<Layer>, std::vector<Data> output, double eta, double seuilMin);
+    DGModel(std::vector<std::vector<Data>>, std::vector<Layer>, std::vector<std::vector<Data>> output, double eta, double seuilMin);
     DGModel(std::string filename);
     void correction(std::vector<Data> vector, double d) override;
 
