@@ -163,6 +163,17 @@ void Model::setSeuil(Seuil* seuil) {
     this->seuil = seuil;
 }
 
+std::vector<std::vector<double>> Model::getSynapseLastLayer() {
+    int lastLayer = this->layers.size()-1;
+    int nbNeurone = this->layers[lastLayer].getNbNeurone();
+    std::vector<std::vector<double>> returnedVector;
+    for(int i =0;i<nbNeurone;i++)
+    {
+        returnedVector.push_back(this->layers[lastLayer].getSynapseNeurone(i));
+    }
+    return returnedVector;
+}
+
 
 
 

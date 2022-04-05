@@ -95,3 +95,7 @@ void Layer::setZeroDw() {
 void Layer::correction(std::vector<Data> line,double eta,double error, int i) {
     this->neurones[i].correction(line,eta,error);
 }
+
+std::vector<double> Layer::getSynapseNeurone(int i) {
+    return this->neurones[i].getSynapse();
+}

@@ -14,7 +14,7 @@
 #include "../Seuil/Seuil.h"
 #include <iostream>
 #include "../Seuil/SeuilIdentite.h"
-
+#include "../Dataset/Util.h"
 class Model {
 protected:
     std::ostream* fp;
@@ -43,6 +43,7 @@ public:
     void save(std::string);
     bool modelValid();
     void setSeuil(Seuil*);
+    std::vector<std::vector<double>> getSynapseLastLayer();
 
 
 };

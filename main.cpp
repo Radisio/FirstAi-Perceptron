@@ -9,7 +9,9 @@
 #include "AILibrary/DerivedModel/AdalineModel.h"
 #include <fstream>
 //#include "matplotlibcpp.h"
-
+#include "sciplot/sciplot/sciplot.hpp"
+#include <math.h>
+using namespace sciplot;
 int main() {
     /*
     std::cout<<"Coucou"<<std::endl;
@@ -116,5 +118,84 @@ int main() {
     modelAda2.debugSynapseWeight();
     modelAda2.fit(10000);
     modelAda2.debugSynapseWeight();
+    std::vector<std::vector<double>> synapses = modelAda2.getSynapseLastLayer();
+    std::vector<double> x = Util::dataTabToDoubleVector(dataV4.getColumn(0),0);
+    std::vector<double> y = Util::dataTabToDoubleVector(dataV4.getColumn(1),0);
+    Vec vX((std::valarray<double>(x.data(),x.size())));
+    Vec vY(std::valarray<double>(y.data(),y.size()));
+    // Create a Plot object
+    Plot plot;
+    // Set the x and y labels
+    plot.xlabel("x");
+    plot.ylabel("y");
+    plot.legend().title("Adaline Monocouche").atOutsideBottom().displayHorizontal().displayExpandWidthBy(2);
+    plot.drawPoints(vX,vY).pointType(0).label("Inputs");
+    int nbNeurones = synapses.size();
+    std::vector<double> vtY;
+    Vec tX = linspace(-2,5,100);
+    int sizeTx = tX.size();
+    for(int i =0;i<nbNeurones;i++)
+    {
+        vtY.clear();
+        for(int j=0;j<sizeTx;j++) {
+            vtY.push_back((-std::abs(synapses[i][0]) - tX[j] * synapses[i][1]) / -std::abs(synapses[i][2]));
+        }
+        Vec tY(std::valarray<double>(vtY.data(), vtY.size()));
+        plot.drawCurve(tX,tY).label("Boundary decision "+ std::to_string(i));
+    }
+    plot.show();
+    /*Dataset dataV4("../datasetTest/table_3_1.csv",true,",",'.');
+    std::vector<std::vector<Data>> entry4 = dataV4.getColumns(0,1);
+    std::vector<std::vector<Data>> output4 = dataV4.getColumns(2,4);
+    //Vec x = linspace(0.0, PI, 200);
+    std::vector<double> x = Util::dataTabToDoubleVector(dataV4.getColumn(0),0);
+    std::vector<double> y = Util::dataTabToDoubleVector(dataV4.getColumn(1),0);
+    Vec vX((std::valarray<double>(x.data(),x.size())));
+    Vec vY(std::valarray<double>(y.data(),y.size()));
+    for(int i =0;i<x.size();i++)
+    {
+        std::cout<<"vX["<<i<<"]="<<x[i]<<std::endl;
+    }
+    // Create a Plot object
+    Plot plot;
+    // Set the x and y labels
+    plot.xlabel("x");
+    plot.ylabel("y");
+    plot.legend().title("Adaline Monocouche").atOutsideBottom().displayHorizontal().displayExpandWidthBy(2);
+    plot.drawPoints(vX,vY).pointType(0);
+    double w0,w1,w2;
+    w0=0.648616;
+    w1=-0.43964;
+    w2=-0.1708;
+
+    ///Avoir le vecteur Y
+    Vec tX = linspace(-2,5,100);
+    std::vector<double> vtY;
+    for(int i =0;i<tX.size();i++)
+    {
+       // vtY.push_back((-(w0/w2)/(w0/w1))*tX[i]+(-w0/w2));
+        vtY.push_back((-std::abs(w0)-tX[i]*w1)/w2);
+    }
+    Vec tY(std::valarray<double>(vtY.data(),vtY.size()));
+    plot.drawCurve(tX,tY);
+
+    double w20,w21,w22;
+    w20=-1.744914;
+    w21=0.065816;
+    w22=-0.465358;
+    Vec tX2 = linspace(-2,5,100);
+    std::vector<double> vtY2;
+    for(int i =0;i<tX.size();i++)
+    {
+        vtY2.push_back((-std::abs(w20)-tX2[i]*w21)/w22);
+        std::cout<<"tx2["<<i<<"]="<<tX2[i]<<std::endl;
+        std::cout<<"Vty2 ["<<i<<"]="<<vtY2[i]<<std::endl;
+    }
+    Vec t2Y(std::valarray<double>(vtY2.data(),vtY2.size()));
+    plot.drawCurve(tX2,t2Y);
+
+
+    // Show the plot in a pop-up window
+    plot.show();*/
     return 0;
 }

@@ -5,7 +5,6 @@
 #ifndef MYIALIBRARY_DATA_H
 #define MYIALIBRARY_DATA_H
 #include <string>
-#include "Util.h"
 #define DATA_TYPE_NUMERIC 0
 #define DATA_TYPE_FACTOR 1
 class Data {

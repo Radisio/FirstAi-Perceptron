@@ -34,10 +34,6 @@ std::vector<double> Neurone::getSynapse() {
 
 void Neurone::correction(std::vector<Data> entry,double eta, double error) {
     int nbSynapse = this->synapse.size();
-  /*  for(int i =0;i<nbSynapse;i++)
-    {
-        this->synapse[i]=this->synapse[i]+eta*error* entry[k].getNumericData();
-    }*/
     std::cout<<"Correction synapse " << 0 << " = " << this->synapse[0]<<"+"<<eta<<"*"<<error<<"*1"<<"=>";
     this->synapse[0]=this->synapse[0]+(eta*error);
     std::cout<<this->synapse[0]<<std::endl;

@@ -7,6 +7,8 @@
 #include <string>
 #include <random>
 #include <vector>
+#include "Data.h"
+
 class Util {
 private:
     Util(){}
@@ -16,6 +18,10 @@ public:
     static void writeLogEndline(std::ostream*, const std::string&);
     static std::vector<std::string> parseString(std::string, std::string);
     static std::vector<double> stringVectorToDouble(std::vector<std::string>);
+    static std::vector<double> dataVectorToDouble(std::vector<Data>);
+
+    static std::vector<std::vector<double>> dataTabToDouble(std::vector<std::vector<Data>>);
+    static std::vector<double> dataTabToDoubleVector(std::vector<std::vector<Data>>, int);
 
 };
 

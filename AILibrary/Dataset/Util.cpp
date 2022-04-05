@@ -59,4 +59,43 @@ std::vector<double> Util::stringVectorToDouble(std::vector<std::string> vString)
 
 }
 
+std::vector<double> Util::dataVectorToDouble(std::vector<Data> vData) {
+    std::vector<double> returnedVector;
+    size_t size=vData.size();
+    for(int i =0;i<size;i++)
+    {
+        returnedVector.push_back( vData[i].getNumericData());
+    }
+    return returnedVector;
+}
+
+std::vector<std::vector<double>> Util::dataTabToDouble(std::vector<std::vector<Data>> tData) {
+    std::vector<std::vector<double>> returnedVector;
+    std::vector<double> tmp;
+    size_t size=tData.size();
+    size_t size2;
+    for(int i =0;i<size;i++)
+    {
+        tmp.clear();
+        size2=tData[i].size();
+        for(int j = 0;j<size2;j++)
+        {
+            tmp.push_back(tData[i][j].getNumericData());
+        }
+        if(size2>0)
+            returnedVector.push_back(tmp);
+    }
+    return returnedVector;
+}
+
+std::vector<double> Util::dataTabToDoubleVector(std::vector<std::vector<Data>> tData, int index) {
+    size_t size=tData.size();
+    std::vector<double> returnedVector;
+    for(int i =0;i<size;i++)
+    {
+        returnedVector.push_back(tData[i][index].getNumericData());
+    }
+    return returnedVector;
+}
+
 
