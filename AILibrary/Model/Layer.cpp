@@ -76,7 +76,9 @@ void Layer::setDwToNeurone(std::vector<Data> line,double eta, double error) {
         this->neurones[i].setDwVec(line,eta,error);
     }
 }
-
+void Layer::setDwToNeurone(std::vector<Data> line,double eta, double error, int i) {
+    this->neurones[i].setDwVec(line,eta,error);
+}
 void Layer::correctionWDW() {
     for (int i =0;i<this->nbNeurone;i++)
     {
@@ -99,3 +101,5 @@ void Layer::correction(std::vector<Data> line,double eta,double error, int i) {
 std::vector<double> Layer::getSynapseNeurone(int i) {
     return this->neurones[i].getSynapse();
 }
+
+

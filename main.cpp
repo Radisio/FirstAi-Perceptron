@@ -64,86 +64,122 @@ int main() {
 
 
 
-   /* Dataset data("../datasetTest/datasetAndDoor.csv",true,",",'.');
-    std::vector<std::vector<Data>> entry = data.getColumns(0,1);
-    std::vector<Data> output = data.getColumn(2);
-    std::vector<Layer> layers({Layer(1)});
-    PerceptronModel model(entry, layers, output, 1, 0);
-    model.initNbSynapticWeight();
-    model.debugLog();
-    model.debugSynapseWeight();
-    model.fit();
-    model.save("E:\\ProjetPerso\\MyIALibrary\\SavedModel\\MyFirstModel.csv");
-    std::vector<Data> answer = model.predict(std::vector<Data>({Data(DATA_TYPE_NUMERIC,"1"),Data(DATA_TYPE_NUMERIC,"1")}));
-    std::cout<<"Answer = " <<answer[0].getNumericData()<<std::endl;
-    std::cout<<"-----------------"<<std::endl;
-    PerceptronModel model1("E:\\ProjetPerso\\MyIALibrary\\SavedModel\\MyFirstModel.csv");
-    model1.debugLog();
-    model1.debugSynapseWeight();
-    std::cout<<"Descente du gradient"<<std::endl;
-    Dataset dataV2("../datasetTest/datasetOrDoorV2.csv",true,",",'.');
-    std::vector<std::vector<Data>> entry2 = dataV2.getColumns(0,1);
-    std::vector<Data> output2 = dataV2.getColumn(2);
-    std::vector<Layer> layers2({Layer(1)});
-    DGModel modelDG(entry2, layers2, output2, 0.2, 0.1250001);
-    modelDG.initNbSynapticWeight();
-    modelDG.debugLog();
-    modelDG.debugSynapseWeight();
-    modelDG.fit(10000);
-    modelDG.debugSynapseWeight();
-    std::vector<Data> answer2 = modelDG.predict(std::vector<Data>({Data(DATA_TYPE_NUMERIC,"1"),Data(DATA_TYPE_NUMERIC,"1")}));
-    std::cout<<"Answer = " <<answer2[0].getNumericData()<<std::endl;
-    std::cout<<"Adaline"<<std::endl;
-    Dataset dataV3("../datasetTest/datasetAndDoorV2.csv",true,",",'.');
-    std::vector<std::vector<Data>> entry3 = dataV3.getColumns(0,1);
-    std::vector<std::vector<Data>> output3 = dataV3.getColumn(2);
-    std::vector<Layer> layers3({Layer(1)});
-    AdalineModel modelAda(entry3, layers3, output3, 0.03, 0.134);
-    modelAda.initNbSynapticWeight();
-    modelAda.debugLog();
-    modelAda.debugSynapseWeight();
-    modelAda.fit(10000);
-    modelAda.debugSynapseWeight();
-    std::vector<Data> answer3 = modelAda.predictWithSeuil(std::vector<Data>({Data(DATA_TYPE_NUMERIC,"1"),Data(DATA_TYPE_NUMERIC,"1")}));
-    std::cout<<"Answer = " <<answer3[0].getNumericData()<<std::endl;
-*/
-    std::cout<<"Adaline mono couche"<<std::endl;
-    Dataset dataV4("../datasetTest/table_3_1.csv",true,",",'.');
-    std::vector<std::vector<Data>> entry4 = dataV4.getColumns(0,1);
-    std::vector<std::vector<Data>> output4 = dataV4.getColumns(2,4);
+    /* Dataset data("../datasetTest/datasetAndDoor.csv",true,",",'.');
+     std::vector<std::vector<Data>> entry = data.getColumns(0,1);
+     std::vector<Data> output = data.getColumn(2);
+     std::vector<Layer> layers({Layer(1)});
+     PerceptronModel model(entry, layers, output, 1, 0);
+     model.initNbSynapticWeight();
+     model.debugLog();
+     model.debugSynapseWeight();
+     model.fit();
+     model.save("E:\\ProjetPerso\\MyIALibrary\\SavedModel\\MyFirstModel.csv");
+     std::vector<Data> answer = model.predict(std::vector<Data>({Data(DATA_TYPE_NUMERIC,"1"),Data(DATA_TYPE_NUMERIC,"1")}));
+     std::cout<<"Answer = " <<answer[0].getNumericData()<<std::endl;
+     std::cout<<"-----------------"<<std::endl;
+     PerceptronModel model1("E:\\ProjetPerso\\MyIALibrary\\SavedModel\\MyFirstModel.csv");
+     model1.debugLog();
+     model1.debugSynapseWeight();
+     std::cout<<"Descente du gradient"<<std::endl;
+     Dataset dataV2("../datasetTest/datasetOrDoorV2.csv",true,",",'.');
+     std::vector<std::vector<Data>> entry2 = dataV2.getColumns(0,1);
+     std::vector<Data> output2 = dataV2.getColumn(2);
+     std::vector<Layer> layers2({Layer(1)});
+     DGModel modelDG(entry2, layers2, output2, 0.2, 0.1250001);
+     modelDG.initNbSynapticWeight();
+     modelDG.debugLog();
+     modelDG.debugSynapseWeight();
+     modelDG.fit(10000);
+     modelDG.debugSynapseWeight();
+     std::vector<Data> answer2 = modelDG.predict(std::vector<Data>({Data(DATA_TYPE_NUMERIC,"1"),Data(DATA_TYPE_NUMERIC,"1")}));
+     std::cout<<"Answer = " <<answer2[0].getNumericData()<<std::endl;
+     std::cout<<"Adaline"<<std::endl;
+     Dataset dataV3("../datasetTest/datasetAndDoorV2.csv",true,",",'.');
+     std::vector<std::vector<Data>> entry3 = dataV3.getColumns(0,1);
+     std::vector<std::vector<Data>> output3 = dataV3.getColumn(2);
+     std::vector<Layer> layers3({Layer(1)});
+     AdalineModel modelAda(entry3, layers3, output3, 0.03, 0.134);
+     modelAda.initNbSynapticWeight();
+     modelAda.debugLog();
+     modelAda.debugSynapseWeight();
+     modelAda.fit(10000);
+     modelAda.debugSynapseWeight();
+     std::vector<Data> answer3 = modelAda.predictWithSeuil(std::vector<Data>({Data(DATA_TYPE_NUMERIC,"1"),Data(DATA_TYPE_NUMERIC,"1")}));
+     std::cout<<"Answer = " <<answer3[0].getNumericData()<<std::endl;
+ */
+    Dataset dataV4("../datasetTest/table_3_1.csv", true, ",", '.');
+    std::vector<std::vector<Data>> entry4 = dataV4.getColumns(0, 1);
+    std::vector<std::vector<Data>> output4 = dataV4.getColumns(2, 4);
     std::vector<Layer> layers4({Layer(3)});
+   /* {
+    std::cout << "Adaline mono couche" << std::endl;
+
     AdalineModel modelAda2(entry4, layers4, output4, 0.03);
     modelAda2.initNbSynapticWeight();
     modelAda2.debugLog();
     modelAda2.debugSynapseWeight();
-    modelAda2.fit(10000);
+    modelAda2.fit(200);
     modelAda2.debugSynapseWeight();
     std::vector<std::vector<double>> synapses = modelAda2.getSynapseLastLayer();
-    std::vector<double> x = Util::dataTabToDoubleVector(dataV4.getColumn(0),0);
-    std::vector<double> y = Util::dataTabToDoubleVector(dataV4.getColumn(1),0);
-    Vec vX((std::valarray<double>(x.data(),x.size())));
-    Vec vY(std::valarray<double>(y.data(),y.size()));
+    std::vector<double> x = Util::dataTabToDoubleVector(dataV4.getColumn(0), 0);
+    std::vector<double> y = Util::dataTabToDoubleVector(dataV4.getColumn(1), 0);
+    Vec vX((std::valarray<double>(x.data(), x.size())));
+    Vec vY(std::valarray<double>(y.data(), y.size()));
     // Create a Plot object
     Plot plot;
     // Set the x and y labels
     plot.xlabel("x");
     plot.ylabel("y");
     plot.legend().title("Adaline Monocouche").atOutsideBottom().displayHorizontal().displayExpandWidthBy(2);
-    plot.drawPoints(vX,vY).pointType(0).label("Inputs");
+    plot.drawPoints(vX, vY).pointType(0).label("Inputs");
     int nbNeurones = synapses.size();
     std::vector<double> vtY;
-    Vec tX = linspace(-2,5,100);
+    Vec tX = linspace(-2, 5, 100);
     int sizeTx = tX.size();
-    for(int i =0;i<nbNeurones;i++)
-    {
+    for (int i = 0; i < nbNeurones; i++) {
         vtY.clear();
-        for(int j=0;j<sizeTx;j++) {
+        for (int j = 0; j < sizeTx; j++) {
             vtY.push_back((-std::abs(synapses[i][0]) - tX[j] * synapses[i][1]) / -std::abs(synapses[i][2]));
         }
         Vec tY(std::valarray<double>(vtY.data(), vtY.size()));
-        plot.drawCurve(tX,tY).label("Boundary decision "+ std::to_string(i));
+        plot.drawCurve(tX, tY).label("Boundary decision " + std::to_string(i));
     }
     plot.show();
+    }*/
+    {
+        std::cout << "Descente du gradient monocouche" << std::endl;
+        DGModel modelDG2(entry4, layers4, output4, 0.0001,0.01);
+        modelDG2.initNbSynapticWeight();
+        modelDG2.debugLog();
+        modelDG2.debugSynapseWeight();
+        modelDG2.fit(200);
+        modelDG2.debugSynapseWeight();
+        std::vector<std::vector<double>> synapses = modelDG2.getSynapseLastLayer();
+        std::vector<double> x = Util::dataTabToDoubleVector(dataV4.getColumn(0), 0);
+        std::vector<double> y = Util::dataTabToDoubleVector(dataV4.getColumn(1), 0);
+        Vec vX((std::valarray<double>(x.data(), x.size())));
+        Vec vY(std::valarray<double>(y.data(), y.size()));
+        // Create a Plot object
+        Plot plot;
+        // Set the x and y labels
+        plot.xlabel("x");
+        plot.ylabel("y");
+        plot.legend().title("Descente du gradient Monocouche").atOutsideBottom().displayHorizontal().displayExpandWidthBy(2);
+        plot.drawPoints(vX, vY).pointType(0).label("Inputs");
+        int nbNeurones = synapses.size();
+        std::vector<double> vtY;
+        Vec tX = linspace(-2, 5, 100);
+        int sizeTx = tX.size();
+        for (int i = 0; i < nbNeurones; i++) {
+            vtY.clear();
+            for (int j = 0; j < sizeTx; j++) {
+                vtY.push_back((-std::abs(synapses[i][0]) - tX[j] * synapses[i][1]) / -std::abs(synapses[i][2]));
+            }
+            Vec tY(std::valarray<double>(vtY.data(), vtY.size()));
+            plot.drawCurve(tX, tY).label("Boundary decision " + std::to_string(i));
+        }
+        plot.show();
+    }
     /*Dataset dataV4("../datasetTest/table_3_1.csv",true,",",'.');
     std::vector<std::vector<Data>> entry4 = dataV4.getColumns(0,1);
     std::vector<std::vector<Data>> output4 = dataV4.getColumns(2,4);

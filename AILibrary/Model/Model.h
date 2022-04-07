@@ -46,6 +46,7 @@ public:
     std::vector<std::vector<double>> getSynapseLastLayer();
 
 
+
 };
 
 

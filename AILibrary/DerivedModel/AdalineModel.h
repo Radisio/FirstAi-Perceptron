@@ -21,6 +21,9 @@ public:
     void fit(int i) override;
 
     std::vector<Data> predict(std::vector<Data> vector) override;
+    std::vector<double> divideEmoyByNbExemple(std::vector<double>, int);
+    bool allEmoyBelowSeuil(std::vector<double>);
+    std::vector<double> setEmoy0(int);
 };
 
 

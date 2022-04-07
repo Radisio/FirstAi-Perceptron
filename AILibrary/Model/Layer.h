@@ -28,6 +28,7 @@ public:
     void setZeroDw();
     void save(std::ofstream*);
     void setDwToNeurone(std::vector<Data>,double,double);
+    void setDwToNeurone(std::vector<Data>,double,double,int);
     std::vector<double> getSynapseNeurone(int);
 };
 
