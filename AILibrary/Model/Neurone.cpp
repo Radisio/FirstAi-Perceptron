@@ -4,8 +4,8 @@
 
 #include <iostream>
 #include "Neurone.h"
-Neurone::Neurone() {
-
+Neurone::Neurone(Seuil* seuil) {
+    this->seuil=seuil;
 }
 
 void Neurone::setNbSynapse(int nbSynapse) {
@@ -19,13 +19,14 @@ void Neurone::setNbSynapse(int nbSynapse) {
 }
 
 Data Neurone::evaluateOutput(std::vector<Data> entry) {
+    std::cout<<"ICI "<<std::endl;
     double returnVal = this->synapse[0];
     int nbCol = entry.size();
     for(int j=1,k=0;j<=nbCol;j++,k++)
     {
         returnVal += entry[k].getNumericData() * this->synapse[j];
     }
-    return Data(DATA_TYPE_NUMERIC,std::to_string(returnVal));
+    return Data(DATA_TYPE_NUMERIC,std::to_string(this->seuil->seuil(returnVal)));
 }
 
 std::vector<double> Neurone::getSynapse() {
@@ -78,6 +79,15 @@ void Neurone::setDwVec(std::vector<Data> line,double eta, double error) {
         this->Dw[j] += eta*error*line[k].getNumericData();
         std::cout<<"=>"<<this->Dw[j]<<std::endl;
     }
+}
+
+Neurone::~Neurone() {
+    std::cout<<"DESTRUCTION NEURONE"<<std::endl;
+    if(this->seuil!=NULL)
+    {
+        delete this->seuil;
+    }
+
 }
 
 

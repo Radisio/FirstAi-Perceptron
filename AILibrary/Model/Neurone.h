@@ -12,15 +12,18 @@
 /// Evaluation de la sortie propre au neurone
 #include <vector>
 #include "../Dataset/Data.h"
+#include "../Seuil/Seuil.h"
 
 class Neurone {
 private:
     std::vector<double> synapse;
     std::vector<double> Dw;
+    Seuil* seuil;
 
 public:
-    Neurone();
+    Neurone(Seuil*);
     Neurone(std::vector<double>);
+    ~Neurone();
     void setNbSynapse(int);
     void zeroDw();
     Data evaluateOutput(std::vector<Data>);

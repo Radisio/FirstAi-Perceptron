@@ -106,11 +106,11 @@ int main() {
      modelAda.debugSynapseWeight();
      std::vector<Data> answer3 = modelAda.predictWithSeuil(std::vector<Data>({Data(DATA_TYPE_NUMERIC,"1"),Data(DATA_TYPE_NUMERIC,"1")}));
      std::cout<<"Answer = " <<answer3[0].getNumericData()<<std::endl;
- */
+
     Dataset dataV4("../datasetTest/table_3_1.csv", true, ",", '.');
     std::vector<std::vector<Data>> entry4 = dataV4.getColumns(0, 1);
     std::vector<std::vector<Data>> output4 = dataV4.getColumns(2, 4);
-    std::vector<Layer> layers4({Layer(3)});
+    std::vector<Layer> layers4({Layer(3, new SeuilIdentite())});
    /* {
     std::cout << "Adaline mono couche" << std::endl;
 
@@ -147,6 +147,10 @@ int main() {
     plot.show();
     }*/
     {
+        Dataset dataV4("../datasetTest/table_3_1.csv", true, ",", '.');
+        std::vector<std::vector<Data>> entry4 = dataV4.getColumns(0, 1);
+        std::vector<std::vector<Data>> output4 = dataV4.getColumns(2, 4);
+        std::vector<Layer> layers4({Layer(3, new SeuilIdentite())});
         std::cout << "Descente du gradient monocouche" << std::endl;
         DGModel modelDG2(entry4, layers4, output4, 0.0001,0.01);
         modelDG2.initNbSynapticWeight();

@@ -11,7 +11,6 @@ Model::Model(std::vector<std::vector<Data>> entry, std::vector<Layer> layers, st
     this->output = output;
     this->eta = eta;
     fp = NULL;
-    this->seuil = new SeuilIdentite();
 }
 
 Model::~Model(){
@@ -20,10 +19,6 @@ Model::~Model(){
         delete this->fp;
     }
     this->fp =NULL;
-    if(this->seuil!=NULL)
-    {
-        delete this->seuil;
-    }
 }
 
 void Model::initNbSynapticWeight() {
@@ -89,7 +84,7 @@ std::vector<Data> Model::predictWithSeuil(std::vector<Data> singleEntry) {
 
     for(int i =0;i<size;i++)
     {
-        out.push_back(Data(DATA_TYPE_NUMERIC,std::to_string(this->seuil->seuil(result[i].getNumericData()))));
+        out.push_back(Data(DATA_TYPE_NUMERIC,std::to_string(result[i].getNumericData())));
     }
     return out;
 }
@@ -123,7 +118,7 @@ void Model::readLayersInFile(std::string filename) {
         std::vector<std::string> parsedLayer;
         std::string line;
         std::vector<std::string> parsedSynapse;
-        std::vector<Neurone> vNeurones;
+        std::vector<Neurone*> vNeurones;
         while(std::getline(in,line))
         {
             parsedLayer = Util::parseString(line,"|");
@@ -132,7 +127,7 @@ void Model::readLayersInFile(std::string filename) {
             for(int i =0;i<nbNeurone;i++)
             {
                 parsedSynapse = Util::parseString(parsedLayer[i],",");
-                vNeurones.emplace_back(Util::stringVectorToDouble(parsedSynapse));
+                vNeurones.push_back(new Neurone(Util::stringVectorToDouble(parsedSynapse)));
 
             }
             this->layers.emplace_back(vNeurones);
@@ -155,13 +150,6 @@ bool Model::modelValid() {
     return this->layers[lastLayer].getNbNeurone()==this->output[0].size();
 }
 
-void Model::setSeuil(Seuil* seuil) {
-    if(this->seuil!=NULL)
-    {
-        delete this->seuil;
-    }
-    this->seuil = seuil;
-}
 
 std::vector<std::vector<double>> Model::getSynapseLastLayer() {
     int lastLayer = this->layers.size()-1;

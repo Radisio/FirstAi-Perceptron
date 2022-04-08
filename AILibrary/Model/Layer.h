@@ -8,16 +8,18 @@
 #include <vector>
 #include "../Dataset/Data.h"
 #include "Neurone.h"
+#include "../Seuil/Seuil.h"
 #include <iostream>
 #include <fstream>
 class Layer {
 private:
     int nbNeurone;
-    std::vector<Neurone> neurones;
+    std::vector<Neurone*> neurones;
 
 public:
-    Layer(int);
-    Layer(std::vector<Neurone>);
+    Layer(int, Seuil*);
+    Layer(std::vector<Neurone*>);
+    ~Layer();
     void setNbSynapse(int);
     int getNbNeurone();
     std::vector<Data> evaluateOutput(std::vector<Data> entry);

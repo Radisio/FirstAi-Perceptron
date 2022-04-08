@@ -26,7 +26,6 @@ protected:
     double eta;
     void readLayersInFile(std::string);
     bool stopWhenNoError;
-    Seuil* seuil;
 public:
     Model(std::vector<std::vector<Data>>, std::vector<Layer>, std::vector<std::vector<Data>> output, double eta);
     Model(std::string filename);
@@ -42,7 +41,6 @@ public:
     void zeroDw();
     void save(std::string);
     bool modelValid();
-    void setSeuil(Seuil*);
     std::vector<std::vector<double>> getSynapseLastLayer();
 
 

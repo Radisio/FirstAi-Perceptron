@@ -11,13 +11,11 @@ DGModel::DGModel(std::string filename) : Model(filename) {
 
 DGModel::DGModel(std::vector<std::vector<Data>> entry, std::vector<Layer> layers, std::vector<std::vector<Data>> output, double eta, double seuilMin) : Model(entry,layers,output,eta){
     this->seuilMin= seuilMin;
-    setSeuil(new SeuilPReLu(-1,1));
     this->stopWhenNoError=false;
 
 }
 DGModel::DGModel(std::vector<std::vector<Data>> entry, std::vector<Layer> layers, std::vector<std::vector<Data>> output, double eta) : Model(entry,layers,output,eta){
     this->stopWhenNoError=true;
-    setSeuil(new SeuilPReLu(-1,1));
 }
 void DGModel::correction(std::vector<Data> vector, double d) {
 
@@ -42,8 +40,7 @@ void DGModel::fit(int maxIteration) {
                 double y = this->evaluateOutput(this->entry[i])[j].getNumericData();
                 double error = this->output[i][j].getNumericData() - y;
                 this->layers[lastLayer].setDwToNeurone(this->entry[i], this->eta, error,j);
-                std::cout<<"Error = " << error << " / Error seuille = " << this->seuil->seuil(error)<<std::endl;
-                errorBool = errorBool || this->seuil->seuil(error) != this->output[i][j].getNumericData();
+                errorBool = errorBool || y != this->output[i][j].getNumericData();
                 std::cout<<"Sortie attendue : " << this->output[i][j].getData()<<" donc errorBool = " << errorBool<<std::endl;
                 std::cout << "Sortie : " << y << " sortie attendue : " << this->output[i][j].getData() << std::endl;    emoy[j] += (error * error) / 2;
             }

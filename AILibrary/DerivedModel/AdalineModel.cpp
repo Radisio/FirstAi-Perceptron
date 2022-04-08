@@ -7,7 +7,6 @@
 AdalineModel::AdalineModel(std::vector<std::vector<Data>> entry, std::vector<Layer> layers, std::vector<std::vector<Data>> output, double eta,
                            double seuilMin) : Model(entry, layers, output, eta) {
     this->seuilMin=seuilMin;
-    setSeuil(new SeuilPReLu(-1,1));
     this->stopWhenNoError=false;
 }
 
@@ -17,7 +16,6 @@ AdalineModel::AdalineModel(std::string filename) : Model(filename) {
 AdalineModel::AdalineModel(std::vector<std::vector<Data>> entry, std::vector<Layer> layers, std::vector<std::vector<Data>> output, double eta)
             : Model(entry,layers,output,eta){
     this->stopWhenNoError=true;
-    setSeuil(new SeuilPReLu(-1,1));
 
 }
 
@@ -47,8 +45,7 @@ void AdalineModel::fit(int maxIteration) {
             {
                 double y = this->evaluateOutput(this->entry[i])[j].getNumericData();
                 double error = this->output[i][j].getNumericData() - y;
-                std::cout<<"Error = " << error << " / Error seuille = " << this->seuil->seuil(error)<<std::endl;
-                errorBool = errorBool || this->seuil->seuil(error) != this->output[i][j].getNumericData();
+                errorBool = errorBool || y != this->output[i][j].getNumericData();
                 std::cout<<"Sortie attendue : " << this->output[i][j].getData()<<" donc errorBool = " << errorBool<<std::endl;
                 emoy[j] += (error * error) / 2;
                 correction(this->entry[i], error,j);
