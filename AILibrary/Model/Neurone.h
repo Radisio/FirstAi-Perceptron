@@ -19,7 +19,7 @@ private:
     std::vector<double> synapse;
     std::vector<double> Dw;
     Seuil* seuil;
-
+    Data lastOutput;
 public:
     Neurone(Seuil*);
     Neurone(std::vector<double>);
@@ -31,6 +31,7 @@ public:
     void correction(std::vector<Data>,double,double);
     void setDwVec(std::vector<Data>,double,double);
     void correctionWDw();
+    Data getLastOutput();
 };
 
 

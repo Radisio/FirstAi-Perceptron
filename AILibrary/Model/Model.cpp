@@ -11,6 +11,11 @@ Model::Model(std::vector<std::vector<Data>> entry, std::vector<Layer> layers, st
     this->output = output;
     this->eta = eta;
     fp = NULL;
+    this->multiLayer=false;
+    if(layers.size()>1)
+    {
+        this->multiLayer=true;
+    }
 }
 
 Model::~Model(){

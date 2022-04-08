@@ -26,7 +26,8 @@ Data Neurone::evaluateOutput(std::vector<Data> entry) {
     {
         returnVal += entry[k].getNumericData() * this->synapse[j];
     }
-    return Data(DATA_TYPE_NUMERIC,std::to_string(this->seuil->seuil(returnVal)));
+    this->lastOutput = Data(DATA_TYPE_NUMERIC,std::to_string(this->seuil->seuil(returnVal)));
+    return this->lastOutput;
 }
 
 std::vector<double> Neurone::getSynapse() {
@@ -88,6 +89,10 @@ Neurone::~Neurone() {
         delete this->seuil;
     }
 
+}
+
+Data Neurone::getLastOutput() {
+    return this->getLastOutput();
 }
 
 

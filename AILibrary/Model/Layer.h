@@ -32,6 +32,8 @@ public:
     void setDwToNeurone(std::vector<Data>,double,double);
     void setDwToNeurone(std::vector<Data>,double,double,int);
     std::vector<double> getSynapseNeurone(int);
+    Data getLastOutputNeurone(int);
+    std::vector<Data> getLastOutputNeurones();
 };
 
 

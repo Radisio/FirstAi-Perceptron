@@ -26,6 +26,7 @@ protected:
     double eta;
     void readLayersInFile(std::string);
     bool stopWhenNoError;
+    bool multiLayer;
 public:
     Model(std::vector<std::vector<Data>>, std::vector<Layer>, std::vector<std::vector<Data>> output, double eta);
     Model(std::string filename);

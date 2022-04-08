@@ -108,4 +108,17 @@ Layer::~Layer() {
 
 }
 
+std::vector<Data> Layer::getLastOutputNeurones() {
+    std::vector<Data> returnedVector;
+    for(int i = 0;i<this->nbNeurone;i++)
+    {
+        returnedVector.push_back(this->neurones[i]->getLastOutput());
+    }
+    return returnedVector;
+}
+
+Data Layer::getLastOutputNeurone(int i) {
+    return this->neurones[i]->getLastOutput();
+}
+
 
