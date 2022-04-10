@@ -22,13 +22,96 @@ AdalineModel::AdalineModel(std::vector<std::vector<Data>> entry, std::vector<Lay
 void AdalineModel::correction(std::vector<Data> line, double error, int i) {
     int lastLayer = this->layers.size()-1;
     ///Correction poids synaptique dernière couche
+    if(this->multiLayer)
+    {
+        /// Calcul signal neurone couche sortie
+            double z = this->layers[lastLayer].getLastOutputNeurone(i).getNumericData();
+            double deltamin = error*z*(1-z);
 
+        ///Calcul signaux couches cachée
+
+
+
+        ///Correction
+    }
     for(int j = lastLayer;j>=0;j--)
     {
         this->layers[j].correction(line,this->eta, error,i);
     }
 }
+void AdalineModel::correction(std::vector<Data> line, std::vector<double> errorVec) {
+    int lastLayer = this->layers.size()-1;
+    ///Correction poids synaptique dernière couche
+    if(this->multiLayer)
+    {
+        int nbLayer = this->layers.size();
+        /// Calcul signal neurone couche sortie
+        int nbNeurone;
+        nbNeurone = this->layers[lastLayer].getNbNeurone();
+        std::vector<double> signalsOutputLayer;
+        for(int i = 0;i<nbNeurone;i++) {
+            double z = this->layers[lastLayer].getLastOutputNeurone(i).getNumericData();
+            signalsOutputLayer.push_back(errorVec[i] * z * (1 - z));
+        }
+        ///Calcul signaux couches cachée
+        int firstHiddenLayer = lastLayer-1;
+        std::vector<std::vector<double>> signalLayers;
+        std::vector<std::vector<Data>> outputLayersNeurones;
+        signalLayers.push_back(signalsOutputLayer);
+        std::vector<double> signalHiddenLayer;
+        std::vector<double> synapses;
+        std::vector<Data> outputNeurones;
+        size_t size;
+        double tmp;
+        for(int i = firstHiddenLayer,k=0;i>=0;i--,k++)
+        {
+            signalHiddenLayer.clear();
+            nbNeurone = this->layers[i].getNbNeurone();
+            outputNeurones.clear();
+            for(int j = 0; j <nbNeurone;j++) {
+                tmp = 0.0;
+                synapses.clear();
+                double yc = this->layers[i].getLastOutputNeurone(j).getNumericData();
+                outputNeurones.push_back(this->layers[i].getLastOutputNeurone(j));
+                // phi'(k_c)= y_c(1-yc)
+                // delta_j(C) = phi'(k_j)( delta_1(C-1)*w1+delta_2*w2+...+delta_n*w_n)
+                synapses=this->layers[i].getSynapseNeurone(j);
+                size = synapses.size();
+                for(int a = 0;a<size;a++)
+                {
+                    tmp+=signalLayers[k][a]*synapses[a];
+                }
+                signalHiddenLayer.push_back((yc*(1-yc))*(tmp));
+            }
+            signalLayers.push_back(signalHiddenLayer);
+            outputLayersNeurones.push_back(outputNeurones);
+        }
+        outputLayersNeurones.push_back(line);
 
+
+        ///Correction
+            /// Couche de sortie
+        nbNeurone = this->layers[lastLayer].getNbNeurone();
+        for(int i=0;i<nbNeurone;i++)
+        {
+            this->layers[lastLayer].correction(outputLayersNeurones[0],this->eta, signalLayers[0][i],i);
+        }
+        for(int i =lastLayer-1,k=0;i>=0;i--,k++)
+        {
+            nbNeurone = this->layers[i].getNbNeurone();
+            for(int j =0;j<nbNeurone;j++)
+            {
+                this->layers[i].correction(outputLayersNeurones[k],this->eta,signalLayers[k][j],j);
+            }
+        }
+    }
+    else{
+        int nbNeurone = this->layers[lastLayer].getNbNeurone();
+        for(int i=0;i<nbNeurone;i++) {
+            this->layers[lastLayer].correction(line, this->eta, errorVec[i],i);
+        }
+    }
+}
 void AdalineModel::fit(int maxIteration) {
     int nbIter = 0;
     std::vector<double> emoy;
@@ -36,20 +119,24 @@ void AdalineModel::fit(int maxIteration) {
     int nbOutput = this->output[0].size();
     bool errorBool = false;
     bool loop = false;
-
+    std::vector<double> errorVec;
     do{
         emoy=setEmoy0(nbOutput);
         errorBool = false;
         for(int i = 0; i < nbExemple; i++) {
+            std::vector<Data> y = this->evaluateOutput(this->entry[i]);
+            errorVec.clear();
             for(int j =0;j<nbOutput;j++)
             {
-                double y = this->evaluateOutput(this->entry[i])[j].getNumericData();
-                double error = this->output[i][j].getNumericData() - y;
-                errorBool = errorBool || y != this->output[i][j].getNumericData();
+               // double y = this->evaluateOutput(this->entry[i])[j].getNumericData();
+                double error = this->output[i][j].getNumericData() - y[j].getNumericData();
+                errorVec.push_back(error);
+                errorBool = errorBool || y[j].getNumericData() != this->output[i][j].getNumericData();
                 std::cout<<"Sortie attendue : " << this->output[i][j].getData()<<" donc errorBool = " << errorBool<<std::endl;
                 emoy[j] += (error * error) / 2;
-                correction(this->entry[i], error,j);
+                //correction(this->entry[i], error,j);
             }
+            correction(this->entry[i],errorVec);
             debugSynapseWeight();
             Util::writeLogEndline(this->fp,"Iteration num :"+std::to_string(nbIter));
         }
@@ -104,5 +191,7 @@ std::vector<double> AdalineModel::setEmoy0(int size) {
     }
     return returnedEmoy;
 }
+
+
 
 

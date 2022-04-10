@@ -10,6 +10,7 @@
 #include <fstream>
 //#include "matplotlibcpp.h"
 #include "sciplot/sciplot/sciplot.hpp"
+#include "AILibrary/Seuil/SeuilSigmoide.h"
 #include <math.h>
 using namespace sciplot;
 int main() {
@@ -110,10 +111,13 @@ int main() {
     Dataset dataV4("../datasetTest/table_3_1.csv", true, ",", '.');
     std::vector<std::vector<Data>> entry4 = dataV4.getColumns(0, 1);
     std::vector<std::vector<Data>> output4 = dataV4.getColumns(2, 4);
-    std::vector<Layer> layers4({Layer(3, new SeuilIdentite())});
+    std::vector<Layer> layers4({Layer(3, new SeuilIdentite())});*/
    /* {
     std::cout << "Adaline mono couche" << std::endl;
-
+    Dataset dataV4("../datasetTest/table_3_1.csv", true, ",", '.');
+    std::vector<std::vector<Data>> entry4 = dataV4.getColumns(0, 1);
+    std::vector<std::vector<Data>> output4 = dataV4.getColumns(2, 4);
+    std::vector<Layer> layers4({Layer(3, new SeuilIdentite())});
     AdalineModel modelAda2(entry4, layers4, output4, 0.03);
     modelAda2.initNbSynapticWeight();
     modelAda2.debugLog();
@@ -146,7 +150,7 @@ int main() {
     }
     plot.show();
     }*/
-    {
+    /*{
         Dataset dataV4("../datasetTest/table_3_1.csv", true, ",", '.');
         std::vector<std::vector<Data>> entry4 = dataV4.getColumns(0, 1);
         std::vector<std::vector<Data>> output4 = dataV4.getColumns(2, 4);
@@ -169,6 +173,44 @@ int main() {
         plot.xlabel("x");
         plot.ylabel("y");
         plot.legend().title("Descente du gradient Monocouche").atOutsideBottom().displayHorizontal().displayExpandWidthBy(2);
+        plot.drawPoints(vX, vY).pointType(0).label("Inputs");
+        int nbNeurones = synapses.size();
+        std::vector<double> vtY;
+        Vec tX = linspace(-2, 5, 100);
+        int sizeTx = tX.size();
+        for (int i = 0; i < nbNeurones; i++) {
+            vtY.clear();
+            for (int j = 0; j < sizeTx; j++) {
+                vtY.push_back((-std::abs(synapses[i][0]) - tX[j] * synapses[i][1]) / -std::abs(synapses[i][2]));
+            }
+            Vec tY(std::valarray<double>(vtY.data(), vtY.size()));
+            plot.drawCurve(tX, tY).label("Boundary decision " + std::to_string(i));
+        }
+        plot.show();
+    }*/
+    {
+        std::cout << "Adaline multi couche" << std::endl;
+        Dataset dataV4("../datasetTest/table_4_12.csv", true, ",", '.');
+        std::vector<std::vector<Data>> entry4 = dataV4.getColumns(0, 1);
+        std::vector<std::vector<Data>> output4 = dataV4.getColumn(2);
+        std::vector<Layer> layers4({Layer(3, new SeuilSigmoide(1)),Layer(1, new SeuilSigmoide(1))});
+        AdalineModel modelAda2(entry4, layers4, output4, 0.5);
+        modelAda2.initNbSynapticWeight();
+        modelAda2.debugLog();
+        modelAda2.debugSynapseWeight();
+        modelAda2.fit(2000);
+        modelAda2.debugSynapseWeight();
+        std::vector<std::vector<double>> synapses = modelAda2.getSynapseLastLayer();
+        std::vector<double> x = Util::dataTabToDoubleVector(dataV4.getColumn(0), 0);
+        std::vector<double> y = Util::dataTabToDoubleVector(dataV4.getColumn(1), 0);
+        Vec vX((std::valarray<double>(x.data(), x.size())));
+        Vec vY(std::valarray<double>(y.data(), y.size()));
+        // Create a Plot object
+        Plot plot;
+        // Set the x and y labels
+        plot.xlabel("x");
+        plot.ylabel("y");
+        plot.legend().title("Adaline Monocouche").atOutsideBottom().displayHorizontal().displayExpandWidthBy(2);
         plot.drawPoints(vX, vY).pointType(0).label("Inputs");
         int nbNeurones = synapses.size();
         std::vector<double> vtY;

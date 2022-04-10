@@ -6,6 +6,7 @@
 #include "Neurone.h"
 Neurone::Neurone(Seuil* seuil) {
     this->seuil=seuil;
+    this->lastOutput= NULL;
 }
 
 void Neurone::setNbSynapse(int nbSynapse) {
@@ -26,8 +27,8 @@ Data Neurone::evaluateOutput(std::vector<Data> entry) {
     {
         returnVal += entry[k].getNumericData() * this->synapse[j];
     }
-    this->lastOutput = Data(DATA_TYPE_NUMERIC,std::to_string(this->seuil->seuil(returnVal)));
-    return this->lastOutput;
+    this->lastOutput = new Data(DATA_TYPE_NUMERIC,std::to_string(this->seuil->seuil(returnVal)));
+    return *this->lastOutput;
 }
 
 std::vector<double> Neurone::getSynapse() {
@@ -50,6 +51,8 @@ void Neurone::correction(std::vector<Data> entry,double eta, double error) {
 
 Neurone::Neurone(std::vector<double> synapses) {
     this->synapse = synapses;
+    this->lastOutput= NULL;
+
 }
 
 void Neurone::zeroDw() {
@@ -87,6 +90,10 @@ Neurone::~Neurone() {
     if(this->seuil!=NULL)
     {
         delete this->seuil;
+    }
+    if(this->lastOutput!=NULL)
+    {
+        delete this->lastOutput;
     }
 
 }

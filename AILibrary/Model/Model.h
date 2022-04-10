@@ -35,6 +35,7 @@ public:
     void initNbSynapticWeight();
     void debugSynapseWeight();
     virtual void correction(std::vector<Data>,double)=0;
+    virtual void correction(std::vector<Data>, std::vector<double>)=0;
     virtual void fit(int=1000)=0;
     void debugLog(std::string="stdout");
     virtual std::vector<Data> predict(std::vector<Data>);

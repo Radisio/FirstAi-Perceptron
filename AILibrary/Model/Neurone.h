@@ -19,7 +19,7 @@ private:
     std::vector<double> synapse;
     std::vector<double> Dw;
     Seuil* seuil;
-    Data lastOutput;
+    Data* lastOutput;
 public:
     Neurone(Seuil*);
     Neurone(std::vector<double>);
