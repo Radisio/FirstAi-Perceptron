@@ -37,6 +37,8 @@ public:
     static int menu_choix(std::vector<std::string>, std::string);
     static double choix_emoy(std::vector<double>);
     static int choix_nb_neurones(std::vector<int>, std::string);
+    static double determinationEmoy(std::vector<double>, std::vector<int>,int);
+    static int getIndex(std::vector<int>,int);
 };
 
 
