@@ -7,10 +7,16 @@
 
 
 #include "Seuil.h"
-
+/// >0
 class SeuilIdentite: public Seuil {
 public:
     double seuil(double val) override;
+
+    bool isActive(double d) override;
+
+    int seuiledValue(double d) override;
+
+    std::vector<double> getInfo() override;
 };
 
 

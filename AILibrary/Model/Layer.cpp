@@ -3,14 +3,20 @@
 //
 
 #include "Layer.h"
+#include "../Seuil/SeuilIdentite.h"
+#include "../Seuil/SeuilMarche.h"
+#include "../Seuil/SeuilPReLu.h"
+#include "../Seuil/SeuilSigmoide.h"
+#include "../Seuil/SeuilTangeanteHyperbolique.h"
 
-Layer::Layer(int nbNeurone, Seuil* seuil) {
+Layer::Layer(int nbNeurone, Seuil* seuil, Generator* generator) {
     this->nbNeurone = nbNeurone;
     for(int i = 0; i<nbNeurone;i++)
     {
-        std::cout<<"Création neurone"<<std::endl;
-        this->neurones.push_back(new Neurone(seuil));
+        std::cout<<"Creation neurone"<<std::endl;
+        this->neurones.push_back(new Neurone(seuil, generator));
     }
+    std::cout<<"OUT"<<std::endl;
 }
 
 void Layer::setNbSynapse(int nbSynapse) {
@@ -64,6 +70,15 @@ void Layer::save(std::ofstream* out) {
         }
         *out<<"|";
     }
+    *out<<"&&";
+    std::vector<double> seuilInfo = getSeuilInfos();
+    size_t size = seuilInfo.size()-1;
+    for(int i = 0 ;i< size;i++)
+    {
+        *out<<seuilInfo[i]<<"/";
+    }
+    size++;
+    *out<<seuilInfo[size];
 }
 
 Layer::Layer(std::vector<Neurone*> neurones) {
@@ -118,7 +133,35 @@ std::vector<Data> Layer::getLastOutputNeurones() {
 }
 
 Data Layer::getLastOutputNeurone(int i) {
+    std::cout<<"I = " << i << " nbNeurone = " << this->neurones.size()<<std::endl;
+    std::cout<<"test : " << this->neurones[i]->getLastOutput().getData()<<std::endl;
     return this->neurones[i]->getLastOutput();
 }
+
+Seuil *Layer::getSeuilNeurones() {
+    return this->neurones[0]->getSeuil();
+}
+
+std::vector<std::vector<double>> Layer::getSynapsesLayer() {
+    std::vector<std::vector<double>> returnedVector;
+    for(int i = 0 ; i < this->nbNeurone;i++)
+        returnedVector.push_back(this->neurones[i]->getSynapse());
+    return returnedVector;
+}
+
+std::vector<std::vector<double>> Layer::getDwAllNeurones() {
+    std::vector<std::vector<double>> returnedVector;
+    for(int i = 0;i<this->nbNeurone;i++)
+    {
+        returnedVector.push_back(this->neurones[i]->getDw());
+    }
+    return returnedVector;
+}
+
+std::vector<double> Layer::getSeuilInfos() {
+    Seuil* s = this->neurones[0]->getSeuil();
+    return SeuilUtil::seuilToInt(s);
+}
+
 
 

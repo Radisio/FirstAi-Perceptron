@@ -12,3 +12,15 @@ SeuilSigmoide::SeuilSigmoide(double c) {
     this->c = c;
 
 }
+
+bool SeuilSigmoide::isActive(double d) {
+    return d>=0.5;
+}
+
+int SeuilSigmoide::seuiledValue(double d) {
+    return d >0.5?1:-0;
+}
+
+std::vector<double> SeuilSigmoide::getInfo() {
+    return std::vector<double>({this->c});
+}

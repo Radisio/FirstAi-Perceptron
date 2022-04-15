@@ -18,11 +18,11 @@ void PerceptronModel::fit(int maxIteration) {
             for(int j=0;j<nbOutput;j++)
             {
                 ///Sortie du perceptron = somme de tous les wi.xi (x0 = seuil)
-                double potentiel = this->evaluateOutput(this->entry[i])[0].getNumericData();
-                double y = potentiel>=0;
-                double error = this->eta*(this->output[i][0].getNumericData() - y);
+                double y = this->evaluateOutput(this->entry[i])[j].getNumericData();
+                double error = this->eta*(this->output[i][j].getNumericData() - y);
                 if(error!=0)
                 {
+                    std::cout<<"On corrige"<<std::endl;
                     this->correction(this->entry[i],error);
                     nbError++;
                 }
@@ -52,15 +52,11 @@ PerceptronModel::PerceptronModel(std::vector<std::vector<Data>> entry, std::vect
     this->maxErrorAllowed = maxErrorAllowed;
 }
 
-std::vector<Data> PerceptronModel::predict(std::vector<Data> vector) {
-    std::vector<Data> response= Model::predict(vector);
-    int size = response.size();
-    for(int i =0;i<size;i++)
-    {
-        response[i].setData(std::to_string(response[i].getNumericData()>=0));
-    }
-    return response;
-}
 
 PerceptronModel::PerceptronModel(std::string filename) : Model(filename){
 }
+
+void PerceptronModel::correction(std::vector<Data> vector, std::vector<double> vector1) {
+
+}
+

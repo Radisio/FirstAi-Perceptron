@@ -11,13 +11,15 @@
 #include "../Seuil/Seuil.h"
 #include <iostream>
 #include <fstream>
+#include "../Dataset/Util.h"
+#include "../Seuil/SeuilUtil.h"
 class Layer {
 private:
     int nbNeurone;
     std::vector<Neurone*> neurones;
 
 public:
-    Layer(int, Seuil*);
+    Layer(int, Seuil*, Generator*);
     Layer(std::vector<Neurone*>);
     ~Layer();
     void setNbSynapse(int);
@@ -32,8 +34,12 @@ public:
     void setDwToNeurone(std::vector<Data>,double,double);
     void setDwToNeurone(std::vector<Data>,double,double,int);
     std::vector<double> getSynapseNeurone(int);
+    std::vector<std::vector<double>> getSynapsesLayer();
     Data getLastOutputNeurone(int);
     std::vector<Data> getLastOutputNeurones();
+    Seuil* getSeuilNeurones();
+    std::vector<std::vector<double>> getDwAllNeurones();
+    std::vector<double> getSeuilInfos();
 };
 
 

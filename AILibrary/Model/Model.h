@@ -38,13 +38,12 @@ public:
     virtual void correction(std::vector<Data>, std::vector<double>)=0;
     virtual void fit(int=1000)=0;
     void debugLog(std::string="stdout");
-    virtual std::vector<Data> predict(std::vector<Data>);
-    virtual std::vector<Data> predictWithSeuil(std::vector<Data>);
+    std::vector<Data> predict(std::vector<Data>);
     void zeroDw();
     void save(std::string);
     bool modelValid();
     std::vector<std::vector<double>> getSynapseLastLayer();
-
+    Seuil* getSeuilLastLayer();
 
 
 };

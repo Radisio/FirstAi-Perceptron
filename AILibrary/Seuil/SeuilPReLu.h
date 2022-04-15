@@ -13,6 +13,11 @@ public:
     SeuilPReLu(double,double);
     double seuil(double) override;
 
+    bool isActive(double d) override;
+
+    int seuiledValue(double d) override;
+
+    std::vector<double> getInfo() override;
 };
 
 

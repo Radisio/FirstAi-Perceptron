@@ -8,7 +8,11 @@
 #include <random>
 #include <vector>
 #include "Data.h"
-
+#include <float.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <string>
+#include <fstream>
 class Util {
 private:
     Util(){}
@@ -22,6 +26,11 @@ public:
 
     static std::vector<std::vector<double>> dataTabToDouble(std::vector<std::vector<Data>>);
     static std::vector<double> dataTabToDoubleVector(std::vector<std::vector<Data>>, int);
+    static double findMax(std::vector<double>);
+    static double findMin(std::vector<double>);
+    static std::vector<double> getAllXFromTab(std::vector<std::vector<double>>, int);
+    static bool file_exist(const std::string& name);
+
 
 };
 

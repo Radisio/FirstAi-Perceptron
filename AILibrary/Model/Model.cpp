@@ -42,6 +42,7 @@ std::vector<Data> Model::evaluateOutput(std::vector<Data> singleEntry) {
     Util::writeLogEndline(this->fp,"EvaluateOutput");
     int nbLayer = this->layers.size();
     std::vector<Data> outputEval = this->layers[0].evaluateOutput(std::move(singleEntry));
+
     for (int i = 1; i<nbLayer;i++)
     {
         Util::writeLogEndline(this->fp,"Loop");
@@ -81,18 +82,8 @@ std::vector<Data> Model::predict(std::vector<Data> singleEntry) {
     Util::writeLogEndline(this->fp,"Predict");
     return evaluateOutput(std::move(singleEntry));
 }
-std::vector<Data> Model::predictWithSeuil(std::vector<Data> singleEntry) {
-    Util::writeLogEndline(this->fp,"Predict with seuil");
-    std::vector<Data> out;
-    std::vector<Data> result = evaluateOutput(singleEntry);
-    int size = result.size();
 
-    for(int i =0;i<size;i++)
-    {
-        out.push_back(Data(DATA_TYPE_NUMERIC,std::to_string(result[i].getNumericData())));
-    }
-    return out;
-}
+
 void Model::save(std::string filepath) {
     std::ofstream *out = new std::ofstream(filepath.c_str(), std::ios::trunc);
     if(out->is_open())
@@ -118,21 +109,26 @@ Model::Model(std::string filename) {
 
 void Model::readLayersInFile(std::string filename) {
     std::ifstream in(filename);
+    std::cout<<"ReadLayersInFile"<<std::endl;
     if(in.is_open())
     {
         std::vector<std::string> parsedLayer;
         std::string line;
         std::vector<std::string> parsedSynapse;
         std::vector<Neurone*> vNeurones;
+        std::vector<std::string> infoLayer;
         while(std::getline(in,line))
         {
+            infoLayer = Util::parseString(Util::parseString(line,"&&")[1],"/");
             parsedLayer = Util::parseString(line,"|");
-            size_t nbNeurone = parsedLayer.size();
+            size_t nbNeurone = parsedLayer.size()-1;
+            Seuil* s = SeuilUtil::intToSeuil(Util::stringVectorToDouble(infoLayer));
+
             vNeurones.clear();
             for(int i =0;i<nbNeurone;i++)
             {
                 parsedSynapse = Util::parseString(parsedLayer[i],",");
-                vNeurones.push_back(new Neurone(Util::stringVectorToDouble(parsedSynapse)));
+                vNeurones.push_back(new Neurone(Util::stringVectorToDouble(parsedSynapse),s));
 
             }
             this->layers.emplace_back(vNeurones);
@@ -165,6 +161,11 @@ std::vector<std::vector<double>> Model::getSynapseLastLayer() {
         returnedVector.push_back(this->layers[lastLayer].getSynapseNeurone(i));
     }
     return returnedVector;
+}
+
+Seuil *Model::getSeuilLastLayer() {
+    int lastLayer = this->layers.size()-1;
+    return this->layers[lastLayer].getSeuilNeurones();
 }
 
 

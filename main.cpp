@@ -11,9 +11,114 @@
 //#include "matplotlibcpp.h"
 #include "sciplot/sciplot/sciplot.hpp"
 #include "AILibrary/Seuil/SeuilSigmoide.h"
+#include "AILibrary/Generator/GeneratorNormalLaw.h"
 #include <math.h>
+#include "AILibrary/SciplotHelper/SciplotHelper.h"
+#include "Demo.h"
+
 using namespace sciplot;
+
 int main() {
+    int returnedVal = 0;
+    do{
+        std::cout<<"Projet RNA -- Paque Eric -- Loic Bourge"<<std::endl;
+        returnedVal= Demo::menu_choix({"Perceptron","Perceptron monocouche","Perceptron multicouche"},"Quitter");
+        if(returnedVal!=-1){
+            switch (returnedVal) {
+                case 0: {
+                    std::cout << "Perceptron" << std::endl;
+                    returnedVal = Demo::menu_choix({"Operateur logique ET (table 2.1)", "Operateur logique ET (table 2.3)",
+                                              "Classification de données linéaires séparables (table 2.9)",
+                                              "Classification de données non linéairement séparables (table 2.10)",
+                                              "Regression linéaire (table 2.11)"}, "Retour");
+                        if(returnedVal!=-1){
+                        switch (returnedVal) {
+                            case 0: {
+                                ///Opérateur logique ET Table 2.1
+                                Demo::operateurLogiqueEtTable2_1();
+                                break;
+                            }
+                            case 1: {
+                                ///Opérateur logique ET Table 2.3
+                                Demo::operateurLogiqueEtTable2_3();
+                                break;
+                            }
+                            case 2 : {
+                                ///Classification de données linéaires séparables Table 2.9
+                                Demo::classificationDonneeLineairementSeparableTable2_9();
+                                break;
+                            }
+                            case 3: {
+                                /// Classification de données linéaires non séparables Table 2.10
+                                Demo::classificationDonneeNonLineairementSeparableTable2_10();
+                                break;
+                            }
+                            case 4: {
+                                /// Régression linéaire (table 2.11)
+                                Demo::regressionLineaireTable2_11();
+                                break;
+                            }
+                        }
+                    }
+                    returnedVal=-2;
+                    break;
+                }
+                case 1: {
+                    std::cout << "Perceptron monocouche" << std::endl;
+                    returnedVal = Demo::menu_choix({"Classification à 3 classes (table 3.1)","Classification à 4 classes (table 3.5)"}, "Retour");
+                    if(returnedVal!=-1){
+                        switch (returnedVal) {
+                            case 0: {
+                                ///Classification à 3 classes (table 3.1)
+                                Demo::classification3ClassesTable3_1();
+                                break;
+                            }
+                            case 1: {
+                                ///Classification à 4 classes (table 3.5)
+                                Demo::classification4ClassesTable3_5();
+                                break;
+                            }
+                        }
+                    }
+                    returnedVal=-2;
+                    break;
+                }
+                case 2: {
+                    std::cout << "Perceptron multicouche" << std::endl;
+                    returnedVal = Demo::menu_choix({"Opérateur logique XOR (table 4.3)",
+                                              "Classification à 2 classes non linéairement séparables (table 4.12)",
+                                              "Classification à 3 classes non linéairement séparables (table 4.14)",
+                                              "Régression non-linéaire (table 4.17)"}, "Retour");
+                    if(returnedVal!=-1){
+                        switch (returnedVal) {
+                            case 0: {
+                                ///Opérateur logique XOR (table 4.3)
+                                Demo::operateurLogiqueXorTable4_3();
+                                break;
+                            }
+                            case 1: {
+                                ///Classification à 2 classes non linéairement séparables (table 4.12)
+                                Demo::classification2ClassesNonLineairementSeparableTable4_12();
+                                break;
+                            }
+                            case 2 : {
+                                ///Classification à 3 classes non linéairement séparables (table 4.14)
+                                Demo::classification3ClassesNonLineairementSeparableTable4_14();
+                                break;
+                            }
+                            case 3: {
+                                ///Régression non-linéaire (table 4.17)
+                                Demo::regressionNonLineaireTable4_17();
+                                break;
+                            }
+                        }
+                    }
+                    returnedVal=-2;
+                    break;
+                }
+            }
+        }
+    }while(returnedVal!=-1);
     /*
     std::cout<<"Coucou"<<std::endl;
    Dataset data("../datasetTest/datasetAndDoor.csv",true,",",'.');
@@ -149,12 +254,12 @@ int main() {
         plot.drawCurve(tX, tY).label("Boundary decision " + std::to_string(i));
     }
     plot.show();
-    }*/
-    /*{
+    }
+    {
         Dataset dataV4("../datasetTest/table_3_1.csv", true, ",", '.');
         std::vector<std::vector<Data>> entry4 = dataV4.getColumns(0, 1);
         std::vector<std::vector<Data>> output4 = dataV4.getColumns(2, 4);
-        std::vector<Layer> layers4({Layer(3, new SeuilIdentite())});
+        std::vector<Layer> layers4({Layer(3, new SeuilIdentite(), new GeneratorNormalLaw(0,1))});
         std::cout << "Descente du gradient monocouche" << std::endl;
         DGModel modelDG2(entry4, layers4, output4, 0.0001,0.01);
         modelDG2.initNbSynapticWeight();
@@ -168,7 +273,8 @@ int main() {
         Vec vX((std::valarray<double>(x.data(), x.size())));
         Vec vY(std::valarray<double>(y.data(), y.size()));
         // Create a Plot object
-        Plot plot;
+        SciplotHelper::drawBoundariesDecisionZones(x,y,&modelDG2).show();
+       /* Plot plot;
         // Set the x and y labels
         plot.xlabel("x");
         plot.ylabel("y");
@@ -187,18 +293,19 @@ int main() {
             plot.drawCurve(tX, tY).label("Boundary decision " + std::to_string(i));
         }
         plot.show();
-    }*/
+    }
     {
         std::cout << "Adaline multi couche" << std::endl;
         Dataset dataV4("../datasetTest/table_4_12.csv", true, ",", '.');
         std::vector<std::vector<Data>> entry4 = dataV4.getColumns(0, 1);
         std::vector<std::vector<Data>> output4 = dataV4.getColumn(2);
-        std::vector<Layer> layers4({Layer(3, new SeuilSigmoide(1)),Layer(1, new SeuilSigmoide(1))});
-        AdalineModel modelAda2(entry4, layers4, output4, 0.5);
+        std::vector<Layer> layers4({Layer(3, new SeuilSigmoide(1), new GeneratorNormalLaw(0,1)),Layer(1, new SeuilSigmoide(1),new GeneratorNormalLaw(0,1))});
+        AdalineModel modelAda2(entry4, layers4, output4, 0.5,0.001);
+        std::cout<<"ICIlalallala"<<std::endl;
         modelAda2.initNbSynapticWeight();
         modelAda2.debugLog();
         modelAda2.debugSynapseWeight();
-        modelAda2.fit(2000);
+        modelAda2.fit(700);
         modelAda2.debugSynapseWeight();
         std::vector<std::vector<double>> synapses = modelAda2.getSynapseLastLayer();
         std::vector<double> x = Util::dataTabToDoubleVector(dataV4.getColumn(0), 0);

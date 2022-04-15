@@ -16,7 +16,9 @@ public:
 
     void correction(std::vector<Data>,double) override;
 
-    std::vector<Data> predict(std::vector<Data> vector) override;
+    void correction(std::vector<Data> vector, std::vector<double> vector1) override;
+
+
 };
 
 

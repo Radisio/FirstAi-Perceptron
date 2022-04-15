@@ -4,31 +4,35 @@
 
 #include <iostream>
 #include "Neurone.h"
-Neurone::Neurone(Seuil* seuil) {
+Neurone::Neurone(Seuil* seuil, Generator* generator) {
     this->seuil=seuil;
     this->lastOutput= NULL;
+    this->generator = generator;
 }
 
 void Neurone::setNbSynapse(int nbSynapse) {
     for (int i = 0; i<=nbSynapse;i++)
     {
         /// Todo: Utiliser les différents types de générations
-        this->synapse.push_back(0);
+        std::cout<<"ON GENERE LALALAL"<<std::endl;
+        this->synapse.push_back(this->generator->generate());
         this->Dw.push_back(0);
     }
 
 }
 
 Data Neurone::evaluateOutput(std::vector<Data> entry) {
-    std::cout<<"ICI "<<std::endl;
+    std::cout<<"On evalue la sortie : "<<std::endl;
     double returnVal = this->synapse[0];
     int nbCol = entry.size();
     for(int j=1,k=0;j<=nbCol;j++,k++)
     {
         returnVal += entry[k].getNumericData() * this->synapse[j];
     }
+    if(this->lastOutput!=nullptr)
+        delete this->lastOutput;
     this->lastOutput = new Data(DATA_TYPE_NUMERIC,std::to_string(this->seuil->seuil(returnVal)));
-    return *this->lastOutput;
+    return Data(DATA_TYPE_NUMERIC,std::to_string(this->seuil->seuil(returnVal)));
 }
 
 std::vector<double> Neurone::getSynapse() {
@@ -49,9 +53,10 @@ void Neurone::correction(std::vector<Data> entry,double eta, double error) {
     }
 }
 
-Neurone::Neurone(std::vector<double> synapses) {
+Neurone::Neurone(std::vector<double> synapses,Seuil* s) {
     this->synapse = synapses;
     this->lastOutput= NULL;
+    this->seuil = s;
 
 }
 
@@ -95,11 +100,23 @@ Neurone::~Neurone() {
     {
         delete this->lastOutput;
     }
+    if(this->generator!=NULL)
+    {
+        delete this->generator;
+    }
 
 }
 
 Data Neurone::getLastOutput() {
-    return this->getLastOutput();
+    return *this->lastOutput;
+}
+
+Seuil *Neurone::getSeuil() {
+    return this->seuil;
+}
+
+std::vector<double> Neurone::getDw() {
+    return this->Dw;
 }
 
 

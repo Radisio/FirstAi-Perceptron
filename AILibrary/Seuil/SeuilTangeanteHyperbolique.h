@@ -11,6 +11,12 @@
 class SeuilTangeanteHyperbolique : public Seuil {
 public:
     double seuil(double x) override;
+
+    bool isActive(double d) override;
+
+    int seuiledValue(double d) override;
+
+    std::vector<double> getInfo() override;
 };
 
 

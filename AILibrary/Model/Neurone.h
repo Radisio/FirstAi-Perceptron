@@ -13,6 +13,7 @@
 #include <vector>
 #include "../Dataset/Data.h"
 #include "../Seuil/Seuil.h"
+#include "../Generator/Generator.h"
 
 class Neurone {
 private:
@@ -20,9 +21,10 @@ private:
     std::vector<double> Dw;
     Seuil* seuil;
     Data* lastOutput;
+    Generator* generator;
 public:
-    Neurone(Seuil*);
-    Neurone(std::vector<double>);
+    Neurone(Seuil*, Generator*);
+    Neurone(std::vector<double>,Seuil*);
     ~Neurone();
     void setNbSynapse(int);
     void zeroDw();
@@ -32,6 +34,8 @@ public:
     void setDwVec(std::vector<Data>,double,double);
     void correctionWDw();
     Data getLastOutput();
+    Seuil* getSeuil();
+    std::vector<double> getDw();
 };
 
 

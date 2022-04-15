@@ -9,8 +9,17 @@
 #include "Seuil.h"
 
 class SeuilMarche: public Seuil {
+private:
+    double marche;
 public:
+    SeuilMarche(double);
     double seuil(double d) override;
+
+    bool isActive(double d) override;
+
+    int seuiledValue(double d) override;
+
+    std::vector<double> getInfo() override;
 };
 
 

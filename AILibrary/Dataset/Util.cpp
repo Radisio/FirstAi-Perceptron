@@ -3,6 +3,7 @@
 //
 
 #include <stdexcept>
+#include <iostream>
 #include "Util.h"
 bool Util::onlydigits(const std::string & dataString,const char floatingPoint) {
     int virgule = 0;
@@ -44,6 +45,8 @@ std::vector<std::string> Util::parseString(std::string toSplit, std::string deli
         start = end+delimiterSize;
 
     }
+    token = toSplit.substr(start,end);
+    returnedVector.push_back(token);
     return returnedVector;
 
 }
@@ -90,12 +93,47 @@ std::vector<std::vector<double>> Util::dataTabToDouble(std::vector<std::vector<D
 
 std::vector<double> Util::dataTabToDoubleVector(std::vector<std::vector<Data>> tData, int index) {
     size_t size=tData.size();
+    std::cout<<"Size ici lalala : "<<size<<std::endl;
     std::vector<double> returnedVector;
     for(int i =0;i<size;i++)
     {
         returnedVector.push_back(tData[i][index].getNumericData());
     }
     return returnedVector;
+}
+
+double Util::findMax(std::vector<double> vec) {
+    size_t size = vec.size();
+    double returnedVec = -DBL_MIN;
+    for(int i =0;i<size;i++)
+    {
+        returnedVec = returnedVec<vec[i]? vec[i]:returnedVec;
+    }
+    return returnedVec;
+}
+
+double Util::findMin(std::vector<double> vec) {
+    size_t size = vec.size();
+    double returnedVec = DBL_MAX;
+    for(int i =0;i<size;i++)
+    {
+        returnedVec = returnedVec>vec[i]? vec[i]:returnedVec;
+    }
+    return returnedVec;
+}
+
+std::vector<double> Util::getAllXFromTab(std::vector<std::vector<double>> tab, int i) {
+    size_t size = tab.size();
+    std::vector<double> returnedVec;
+    for(int j = 0 ; j <size;j++)
+    {
+        returnedVec.push_back(tab[j][i]);
+    }
+    return returnedVec;
+}
+
+bool Util::file_exist(const std::string &name) {
+    return ( access( name.c_str(), F_OK ) != -1 );
 }
 
 

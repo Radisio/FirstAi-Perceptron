@@ -30,20 +30,27 @@ void DGModel::fit(int maxIteration) {
     int lastLayer = nbLayer-1;
     std::vector<double> emoy;
     int nbIter=0;
+    Seuil* seuil = getSeuilLastLayer();
     do{
         emoy=setEmoy0(nbOutput);
         zeroDw();
         errorBool = false;
-
+        std::vector<Data> yVec;
         for(int i = 0;i<nbExemple;i++) {
+            std::cout<<"Before"<<std::endl;
+            yVec = this->evaluateOutput(this->entry[i]);
+            std::cout<<"After"<<std::endl;
             for (int j = 0; j < nbOutput; j++) {
-                double y = this->evaluateOutput(this->entry[i])[j].getNumericData();
-                double error = this->output[i][j].getNumericData() - y;
+                //double y = this->evaluateOutput(this->entry[i])[j].getNumericData();
+                double error = this->output[i][j].getNumericData() - yVec[j].getNumericData();
                 this->layers[lastLayer].setDwToNeurone(this->entry[i], this->eta, error,j);
-                errorBool = errorBool || y != this->output[i][j].getNumericData();
+                errorBool = errorBool || seuil->seuiledValue(yVec[j].getNumericData()) != this->output[i][j].getNumericData();
                 std::cout<<"Sortie attendue : " << this->output[i][j].getData()<<" donc errorBool = " << errorBool<<std::endl;
-                std::cout << "Sortie : " << y << " sortie attendue : " << this->output[i][j].getData() << std::endl;    emoy[j] += (error * error) / 2;
+                std::cout << "Sortie : " << yVec[j].getNumericData() << " sortie attendue : " << this->output[i][j].getData() << std::endl;
+                emoy[j] += (error * error)/2;
+                std::cout<<"BBBLLBHBLBL"<<std::endl;
             }
+            std::cout<<"AHHAHAHKDLSKQDQSLKDHQSDKLQ"<<std::endl;
         }
         std::cout<<"On corrige"<<std::endl;
         ///Correction des poids synaptiques
@@ -51,25 +58,27 @@ void DGModel::fit(int maxIteration) {
         {
             this->layers[j].correctionWDW();
         }
+        for(int i = 0;i<emoy.size();i++)
+        {
+            std::cout<<"Emoy ["<<i<<"] : " << emoy[i]<<std::endl;
+        }
         emoy= divideEmoyByNbExemple(emoy,nbExemple);
         nbIter++;
         std::cout<<"SeuilMin" << this->seuilMin<<std::endl;
+        for(int i = 0;i<emoy.size();i++)
+        {
+            std::cout<<"Emoy ["<<i<<"] : " << emoy[i]<<std::endl;
+        }
         debugSynapseWeight();
         loop = this->stopWhenNoError?errorBool:!allEmoyBelowSeuil(emoy) ;
         std::cout<<"Loop = " << loop<<std::endl;
+        std::cout<<"AllEmoyBelowSeuil : " << allEmoyBelowSeuil(emoy)<<std::endl;
+        std::cout<<"NbIter = " << nbIter<<std::endl;
+        std::cout<<"Error = " << errorBool<<std::endl;
     }while(loop&& nbIter<maxIteration);
 
 }
 
-std::vector<Data> DGModel::predict(std::vector<Data> vector) {
-    std::vector<Data> response= Model::predict(vector);
-    int size = response.size();
-    for(int i =0;i<size;i++)
-    {
-        response[i].setData(std::to_string(response[i].getNumericData()>=0));
-    }
-    return response;
-}
 
 std::vector<double> DGModel::divideEmoyByNbExemple(std::vector<double> emoy, int nbExemple) {
     int emoySize = emoy.size();
@@ -102,5 +111,6 @@ std::vector<double> DGModel::setEmoy0(int size) {
     return returnedEmoy;
 }
 
+void DGModel::correction(std::vector<Data> line, std::vector<double> errorVec) {
 
-
+}
