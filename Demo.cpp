@@ -77,7 +77,7 @@ void Demo::operateurLogiqueEtTable2_3() {
 
     Plot plot =SciplotHelper::drawBoundariesDecisionLines(x,y,classes,model,"Operateur logique ET(Table 2.3)");
     plot.show();
-    plot.save("../SavedPlot/DGtable2_3_plot.pdf");
+    plot.save("../SavedPlot/DGtable2_3_plot.png");
     delete model;
 }
 
@@ -119,7 +119,7 @@ void Demo::classificationDonneeLineairementSeparableTable2_9() {
             std::vector<std::vector<double>> classes = Util::dataTabToDouble(output);
             Plot plot = SciplotHelper::drawBoundariesDecisionLines(x,y,classes,model,"Classification donnee lineairement separable (Descente du gradient) (Table 2.9)");
             plot.show();
-            plot.save("../SavedPlot/DGtable2_9_plot.pdf");
+            plot.save("../SavedPlot/DGtable2_9_plot.png");
             break;
         }
 
@@ -153,7 +153,7 @@ void Demo::classificationDonneeLineairementSeparableTable2_9() {
             std::vector<std::vector<double>> classes = Util::dataTabToDouble(output);
 
             Plot plot = SciplotHelper::drawBoundariesDecisionLines(x,y,classes,model,"Classification donnee lineairement separable (Adaline) (Table 2.9)");
-            plot.save(R"(E:\ProjetPerso\MyIALibrary\SavedPlot\Adatable2_9_plot.png)");
+            plot.save("../SavedPlot/Adatable2_9_plot.png");
             plot.show();
             break;
         }
@@ -198,7 +198,7 @@ void Demo::classificationDonneeNonLineairementSeparableTable2_10() {
 
             Plot plot = SciplotHelper::drawBoundariesDecisionLines(x,y,classes,model,"Classification donnee non-lineairement separable (Descente du gradient) (Table 2.10)");
             plot.show();
-            plot.save("../SavedPlot/DGtable2_10_plot.pdf");
+            plot.save("../SavedPlot/DGtable2_10_plot.png");
             break;
         }
         case 1:
@@ -227,7 +227,7 @@ void Demo::classificationDonneeNonLineairementSeparableTable2_10() {
 
             Plot plot = SciplotHelper::drawBoundariesDecisionLines(x,y,classes,model,"Classification donnee non-lineairement separable (Adaline) (Table 2.10)");
             plot.show();
-            plot.save("../SavedPlot/Adatable2_10_plot.pdf");
+            plot.save("../SavedPlot/Adatable2_10_plot.png");
             break;
         }
     }
@@ -269,7 +269,7 @@ void Demo::regressionLineaireTable2_11() {
             std::vector<double> y = Util::dataTabToDoubleVector(data.getColumn(1), 0);
             Plot plot = SciplotHelper::drawRegressionCurve(x,y,model,"Régression linéaire (Descente du gradient) (Table 2.11)");
             plot.show();
-            plot.save("../SavedPlot/DGtable2_11_plot.pdf");
+            plot.save("../SavedPlot/DGtable2_11_plot.png");
             break;
         }
         case 1:
@@ -296,7 +296,7 @@ void Demo::regressionLineaireTable2_11() {
             std::vector<double> y = Util::dataTabToDoubleVector(data.getColumn(1), 0);
             Plot plot = SciplotHelper::drawRegressionCurve(x,y,model,"Régression linéaire (Adaline) (Table 2.11)");
             plot.show();
-            plot.save("../SavedPlot/Adatable2_11_plot.pdf");
+            plot.save("../SavedPlot/Adatable2_11_plot.png");
             break;
         }
     }
@@ -324,7 +324,7 @@ void Demo::classification3ClassesTable3_1() {
             if(fitOrModel==-1)
                 return;
             if(fitOrModel==0) {
-                model = new DGModel(entry, layers, output, 0.0001, 0.01);
+                model = new DGModel(entry, layers, output, 0.0001, 0.015);
                 model->initNbSynapticWeight();
                 model->debugLog();
                 model->debugSynapseWeight();
@@ -342,37 +342,37 @@ void Demo::classification3ClassesTable3_1() {
             Plot plot2 = SciplotHelper::drawBoundariesDecisionZones(x,y,model,"Classification 3 classes (Zones) (Descente du gradient) (Table 3.1)");
             Figure fig = {{plot},{plot2}};
             fig.show();
-            fig.save("../SavedPlot/DGtable_3_1_plot.pdf");
+            fig.save("../SavedPlot/DGtable_3_1_plot.png");
             break;
         }
         case 1:
         {
-            file_exist = Util::file_exist(std::string(SAVED_MODEL_PATH)+"ADA_Classification3ClassesTable2_11.csv");
+            file_exist = Util::file_exist(std::string(SAVED_MODEL_PATH)+"ADA_Classification3ClassesTable3_1.csv");
             fitOrModel = 0;
             if(file_exist)
                 fitOrModel = menu_choix({"Fit","Resultat"},"Retour");
             if(fitOrModel==-1)
                 return;
             if(fitOrModel==0) {
-                model = new AdalineModel(entry, layers, output, 0.03);
+                model = new AdalineModel(entry, layers, output, 0.001,0.21);
                 model->initNbSynapticWeight();
                 model->debugLog();
                 model->debugSynapseWeight();
                 model->fit(300);
                 model->debugSynapseWeight();
-                model->save(std::string(SAVED_MODEL_PATH)+"ADA_Classification3ClassesTable2_11.csv");
+                model->save(std::string(SAVED_MODEL_PATH)+"ADA_Classification3ClassesTable3_1.csv");
             }
             else{
-                model = new AdalineModel(std::string(SAVED_MODEL_PATH)+"ADA_Classification3ClassesTable2_11.csv");
+                model = new AdalineModel(std::string(SAVED_MODEL_PATH)+"ADA_Classification3ClassesTable3_1.csv");
             }
             std::vector<double> x = Util::dataTabToDoubleVector(entry, 0);
             std::vector<double> y = Util::dataTabToDoubleVector(entry, 1);
             std::vector<std::vector<double>> classes = Util::dataTabToDouble(output);
-            Plot plot = SciplotHelper::drawBoundariesDecisionLines(x,y,classes,model,"Classification 3 classee (Droites) (Descente du gradient) (Table 3.1)");
-            Plot plot2 = SciplotHelper::drawBoundariesDecisionZones(x,y,model,"Classification 3 classes (Zones) (Descente du gradient) (Table 3.1)");
+            Plot plot = SciplotHelper::drawBoundariesDecisionLines(x,y,classes,model,"Classification 3 classee (Droites) (Adaline) (Table 3.1)");
+            Plot plot2 = SciplotHelper::drawBoundariesDecisionZones(x,y,model,"Classification 3 classes (Zones) (Adaline) (Table 3.1)");
             Figure fig = {{plot},{plot2}};
             fig.show();
-            fig.save("../SavedPlot/DGtable_3_1_plot.pdf");
+            fig.save("../SavedPlot/Adatable_3_1_plot.png");
             break;
         }
     }
@@ -391,7 +391,7 @@ void Demo::classification4ClassesTable3_5() {
     switch (returnedVal) {
         case 0:
         {
-            model = new DGModel(entry, layers, output, 0.0001,0.01);
+            model = new DGModel(entry, layers, output, 0.0001);
             model->initNbSynapticWeight();
             model->debugLog();
             model->debugSynapseWeight();
@@ -406,7 +406,7 @@ void Demo::classification4ClassesTable3_5() {
             model->initNbSynapticWeight();
             model->debugLog();
             model->debugSynapseWeight();
-            model->fit(300);
+            model->fit(780);
             model->debugSynapseWeight();
             model->save(std::string(SAVED_MODEL_PATH)+"ADA_Classification3ClassesTable2_11.csv");
             break;
@@ -421,31 +421,35 @@ void Demo::operateurLogiqueXorTable4_3() {
     Dataset data("../datasetTest/table_4_3.csv", false, ",", '.');
     std::vector<std::vector<Data>> entry = data.getColumns(0,1);
     std::vector<std::vector<Data>> output = data.getColumn(2);
-    std::vector<Layer> layers({Layer(2, new SeuilSigmoide(1), new GeneratorNormalLaw(0.0,1.0)),Layer(1, new SeuilSigmoide(1), new GeneratorNormalLaw(0.0,1.0))});
-    file_exist = Util::file_exist(std::string(SAVED_MODEL_PATH)+"DG_OperateurLogiqueXORTable4_3.csv");
+    int nbNeuroneCoucheCache = choix_nb_neurones({2,3},"Retour");
+    if(nbNeuroneCoucheCache==-1)
+        return;
+    std::vector<Layer> layers({Layer(nbNeuroneCoucheCache, new SeuilSigmoide(1), new GeneratorNormalLaw(0.0,1.0)),Layer(1, new SeuilSigmoide(1), new GeneratorNormalLaw(0.0,1.0))});
+    file_exist = Util::file_exist(std::string(SAVED_MODEL_PATH)+"DG_OperateurLogiqueXORTable4_3_"+ std::to_string(nbNeuroneCoucheCache)+".csv");
     fitOrModel = 0;
     if(file_exist)
         fitOrModel = menu_choix({"Fit","Resultat"},"Retour");
     if(fitOrModel==-1)
         return;
     if(fitOrModel==0) {
-        model = new DGModel(entry, layers, output, 0.8,0.01);
+        //2->emoy 0.087 eta 1.25
+        model = new DGModel(entry, layers, output, 0.8,0.001);
         model->initNbSynapticWeight();
         model->debugLog();
         model->debugSynapseWeight();
-        model->fit(2000);
+        model->fit(4000);
         model->debugSynapseWeight();
-        model->save(std::string(SAVED_MODEL_PATH)+"DG_OperateurLogiqueXORTable4_3.csv");
+        model->save(std::string(SAVED_MODEL_PATH)+"DG_OperateurLogiqueXORTable4_3_"+ std::to_string(nbNeuroneCoucheCache)+".csv");
     }
     else{
-        model = new DGModel(std::string(SAVED_MODEL_PATH)+"DG_OperateurLogiqueXORTable4_3.csv");
+        model = new DGModel(std::string(SAVED_MODEL_PATH)+"DG_OperateurLogiqueXORTable4_3_"+ std::to_string(nbNeuroneCoucheCache)+".csv");
     }
     std::vector<double> x = Util::dataTabToDoubleVector(entry, 0);
     std::vector<double> y = Util::dataTabToDoubleVector(entry, 1);
     std::vector<std::vector<double>> classes = Util::dataTabToDouble(output);
     Plot plot = SciplotHelper::drawBoundariesDecisionZones(x,y,model,"Operateur logique XOR (Descente du gradient) (Table 4.3)");
     plot.show();
-    plot.save("../SavedPlot/DGtable4_3_plot.pdf");
+    plot.save("../SavedPlot/DGtable4_3_plot_"+ std::to_string(nbNeuroneCoucheCache)+".png");
 
 }
 
@@ -463,7 +467,7 @@ void Demo::classification2ClassesNonLineairementSeparableTable4_12() {
     Model* model;
     bool file_exist;
     int fitOrModel = 0;
-    file_exist = Util::file_exist(std::string(SAVED_MODEL_PATH)+"ADA_Classification2ClassesNonLineairementSeparableTable4_12.csv");
+    file_exist = Util::file_exist(std::string(SAVED_MODEL_PATH)+"ADA_Classification2ClassesNonLineairementSeparableTable4_12_"+ std::to_string(nbNeuroneCoucheCache)+".csv");
     fitOrModel = 0;
     if(file_exist)
         fitOrModel = menu_choix({"Fit","Resultat"},"Retour");
@@ -476,16 +480,17 @@ void Demo::classification2ClassesNonLineairementSeparableTable4_12() {
         model->debugSynapseWeight();
         model->fit(2000);
         model->debugSynapseWeight();
-        model->save(std::string(SAVED_MODEL_PATH)+"ADA_Classification2ClassesNonLineairementSeparableTable4_12.csv");
+        model->save(std::string(SAVED_MODEL_PATH)+"ADA_Classification2ClassesNonLineairementSeparableTable4_12_"+ std::to_string(nbNeuroneCoucheCache)+".csv");
     }
     else{
-        model = new DGModel(std::string(SAVED_MODEL_PATH)+"ADA_Classification2ClassesNonLineairementSeparableTable4_12.csv");
+        model = new DGModel(std::string(SAVED_MODEL_PATH)+"ADA_Classification2ClassesNonLineairementSeparableTable4_12_"+ std::to_string(nbNeuroneCoucheCache)+".csv");
     }
     std::vector<double> x = Util::dataTabToDoubleVector(entry, 0);
     std::vector<double> y = Util::dataTabToDoubleVector(entry, 1);
     std::vector<std::vector<double>> classes = Util::dataTabToDouble(output);
     Plot plot= SciplotHelper::drawBoundariesDecisionZones(x,y,model,"Classification 2 classes non linéairement séparable (Zones) (Adaline) (Table 4.12)");
     plot.show();
+    plot.save("../SavedPlot/ADAtable_4_12_"+ std::to_string(nbNeuroneCoucheCache)+"_plot.png");
 }
 
 void Demo::classification3ClassesNonLineairementSeparableTable4_14() {
@@ -503,7 +508,7 @@ void Demo::classification3ClassesNonLineairementSeparableTable4_14() {
     std::vector<std::vector<Data>> entry = data.getColumns(0,1);
     std::vector<std::vector<Data>> output = data.getColumns(2,4);
 
-    file_exist = Util::file_exist(std::string(SAVED_MODEL_PATH)+"DG_Classification3ClassesNonLineairementSeparableTable4_14.csv");
+    file_exist = Util::file_exist(std::string(SAVED_MODEL_PATH)+"DG_Classification3ClassesNonLineairementSeparableTable4_14_"+ std::to_string(nbNeuroneCoucheCache)+".csv");
     fitOrModel = 0;
     if(file_exist)
         fitOrModel = menu_choix({"Fit","Resultat"},"Retour");
@@ -515,17 +520,17 @@ void Demo::classification3ClassesNonLineairementSeparableTable4_14() {
         model->debugLog();
         model->debugSynapseWeight();
         model->fit(2000);
-        model->save(std::string(SAVED_MODEL_PATH)+"ADA_Classification3ClassesNonLineairementSeparableTable4_14.csv");
+        model->save(std::string(SAVED_MODEL_PATH)+"ADA_Classification3ClassesNonLineairementSeparableTable4_14_"+ std::to_string(nbNeuroneCoucheCache)+".csv");
     }
     else{
-        model = new DGModel(std::string(SAVED_MODEL_PATH)+"ADA_Classification3ClassesNonLineairementSeparableTable4_14.csv");
+        model = new DGModel(std::string(SAVED_MODEL_PATH)+"ADA_Classification3ClassesNonLineairementSeparableTable4_14_"+ std::to_string(nbNeuroneCoucheCache)+".csv");
     }
     std::vector<double> x = Util::dataTabToDoubleVector(entry, 0);
     std::vector<double> y = Util::dataTabToDoubleVector(entry, 1);
     std::vector<std::vector<double>> classes = Util::dataTabToDouble(output);
     Plot plot = SciplotHelper::drawBoundariesDecisionZones(x,y,model,"Classification 3 classes (Zones) (Adaline) (Table 4.14)");
     plot.show();
-    plot.save("../SavedPlot/ADAtable_4_14_plot.pdf");
+    plot.save("../SavedPlot/ADAtable_4_14_"+ std::to_string(nbNeuroneCoucheCache)+"_plot.png");
 }
 
 void Demo::regressionNonLineaireTable4_17() {
@@ -542,7 +547,7 @@ void Demo::regressionNonLineaireTable4_17() {
     Model* model;
     bool file_exist;
     int fitOrModel = 0;
-    file_exist = Util::file_exist(std::string(SAVED_MODEL_PATH)+"DG_RegressionNonLineaireTable4_17.csv");
+    file_exist = Util::file_exist(std::string(SAVED_MODEL_PATH)+"DG_RegressionNonLineaireTable4_17_"+ std::to_string(nbNeuroneCoucheCache)+".csv");
     fitOrModel = 0;
     if(file_exist)
         fitOrModel = menu_choix({"Fit","Resultat"},"Retour");
@@ -555,17 +560,17 @@ void Demo::regressionNonLineaireTable4_17() {
         model->debugSynapseWeight();
         model->fit(10000);
         model->debugSynapseWeight();
-        model->save(std::string(SAVED_MODEL_PATH)+"DG_RegressionNonLineaireTable4_17.csv");
+        model->save(std::string(SAVED_MODEL_PATH)+"DG_RegressionNonLineaireTable4_17"+ std::to_string(nbNeuroneCoucheCache)+".csv");
     }
     else{
-        model = new DGModel(std::string(SAVED_MODEL_PATH)+"DG_RegressionNonLineaireTable4_17.csv");
+        model = new DGModel(std::string(SAVED_MODEL_PATH)+"DG_RegressionNonLineaireTable4_17_"+ std::to_string(nbNeuroneCoucheCache)+".csv");
     }
     std::vector<double> x = Util::dataTabToDoubleVector(entry, 0);
     std::vector<double> y = Util::dataTabToDoubleVector(entry, 1);
     std::vector<std::vector<double>> classes = Util::dataTabToDouble(output);
     Plot plot = SciplotHelper::drawRegressionCurve(x,y,model,"Régression non linéaire (Descente du Gradient) (Table 4_17)");
     plot.show();
-    plot.save("../SavedPlot/DGtable_4_17_plot.pdf");
+    plot.save("../SavedPlot/DGtable_4_17_plot_"+ std::to_string(nbNeuroneCoucheCache)+".png");
 
 }
 

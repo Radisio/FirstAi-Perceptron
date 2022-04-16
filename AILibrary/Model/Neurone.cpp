@@ -22,7 +22,6 @@ void Neurone::setNbSynapse(int nbSynapse) {
 }
 
 Data Neurone::evaluateOutput(std::vector<Data> entry) {
-    std::cout<<"On evalue la sortie : "<<std::endl;
     double returnVal = this->synapse[0];
     int nbCol = entry.size();
     for(int j=1,k=0;j<=nbCol;j++,k++)

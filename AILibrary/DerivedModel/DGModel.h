@@ -27,6 +27,9 @@ public:
     std::vector<double> setEmoy0(int);
 
     void correction(std::vector<Data> vector, std::vector<double> vector1) override;
+
+    void correction(std::vector<double>);
+    void setDwToLayers(std::vector<Data>,std::vector<double>);
 };
 
 
