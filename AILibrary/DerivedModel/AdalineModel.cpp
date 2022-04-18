@@ -41,28 +41,19 @@ void AdalineModel::correction(std::vector<Data> line, double error, int i) {
 }
 void AdalineModel::correction(std::vector<Data> line, std::vector<double> errorVec) {
     int lastLayer = this->layers.size()-1;
-    std::cout<<"ON CORRIGE"<<std::endl;
     ///Correction poids synaptique dernière couche
     if(this->multiLayer)
     {
-        std::cout<<"MULTILAYER"<<std::endl;
         int nbLayer = this->layers.size();
         /// Calcul signal neurone couche sortie
         int nbNeurone;
         nbNeurone = this->layers[lastLayer].getNbNeurone();
         std::vector<double> signalsOutputLayer;
         for(int i = 0;i<nbNeurone;i++) {
-            std::cout<<"AHHH"<<std::endl;
             double z = this->layers[lastLayer].getLastOutputNeurone(i).getNumericData();
-            std::cout<<"AHHH z = "<<z<<std::endl;
-            std::cout<<"On va push dans signal neurone couche sortie : " <<errorVec[i] * z * (1 - z)<<std::endl;
-            std::cout<<"ErrorVec["<<i<<"]="<<errorVec[i]<<std::endl;
             signalsOutputLayer.push_back(errorVec[i] * z * (1 - z));
-            std::cout<<"AHHH"<<std::endl;
 
         }
-        std::cout<<"ON A CALCULE LES SIGNAUX DE LA COUCHE DE SORTIE"<<std::endl;
-
         ///Calcul signaux couches cachée
         int firstHiddenLayer = lastLayer-1;
         std::vector<std::vector<double>> signalLayers;
@@ -100,37 +91,21 @@ void AdalineModel::correction(std::vector<Data> line, std::vector<double> errorV
             outputLayersNeurones.push_back(outputNeurones);
         }
         outputLayersNeurones.push_back(line);
-        std::cout<<"ON A CALCULE LES SIGNAUX DE LA COUCHE CACHE"<<std::endl;
-        std::cout<<"Signal layer size : " << signalLayers.size()<<std::endl;
-        std::cout<<"Output layers neurones size : " << outputLayersNeurones.size()<<std::endl;
 
-
-        std::cout<<"SIGNAL LAYERS ="<<std::endl;
-        for(int i = 0 ; i<signalLayers.size();i++)
-        {
-            for(int j = 0;j<signalLayers[i].size();j++)
-            {
-                std::cout<<"SignalLayer["<<i<<"]["<<j<<"]="<<signalLayers[i][j]<<std::endl;
-            }
-        }
 
         ///Correction
             /// Couche de sortie
         nbNeurone = this->layers[lastLayer].getNbNeurone();
         for(int i=0;i<nbNeurone;i++)
         {
-            std::cout<<"On corrige la couche "<<lastLayer<< " et le neurone " << i << std::endl;
-            std::cout << "Signal Layers ["<<0<<"]["<<i<<"]=" << signalLayers[0][i]<<std::endl;
             this->layers[lastLayer].correction(outputLayersNeurones[0],this->eta, signalLayers[0][i],i);
         }
-        std::cout<<"ON A CORRIGE LES POIDS DE LA COUCHE DE SORTIE"<<std::endl;
+        ///Couche(s) cachées
         for(int i =lastLayer-1,k=1;i>=0;i--,k++)
         {
             nbNeurone = this->layers[i].getNbNeurone();
             for(int j =0;j<nbNeurone;j++)
             {
-                std::cout<<"On corrige la couche "<<i<< " et le neurone " << j << std::endl;
-                std::cout << "Signal Layers ["<<k<<"]["<<j<<"]=" << signalLayers[k][j]<<std::endl;
                 this->layers[i].correction(outputLayersNeurones[k],this->eta,signalLayers[k][j],j);
             }
         }
@@ -168,14 +143,14 @@ void AdalineModel::fit(int maxIteration) {
                 //correction(this->entry[i], error,j);
             }
             correction(this->entry[i],errorVec);
-            debugSynapseWeight();
+            //debugSynapseWeight();
             Util::writeLogEndline(this->fp,"Iteration num :"+std::to_string(nbIter));
         }
         emoy= divideEmoyByNbExemple(emoy,nbExemple);
         nbIter++;
+        std::cout<<"NbIter = " << nbIter<<std::endl;
         loop = this->stopWhenNoError?errorBool:!allEmoyBelowSeuil(emoy) ;
     }while(loop && nbIter<maxIteration);
-    std::cout<<"Debug"<<std::endl;
     std::cout<<"Emoy:"<<std::endl;
     for(int i =0;i<nbOutput;i++)
     {

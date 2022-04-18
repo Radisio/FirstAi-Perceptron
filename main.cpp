@@ -8,7 +8,6 @@
 #include "AILibrary/DerivedModel/DGModel.h"
 #include "AILibrary/DerivedModel/AdalineModel.h"
 #include <fstream>
-//#include "matplotlibcpp.h"
 #include "sciplot/sciplot/sciplot.hpp"
 #include "AILibrary/Seuil/SeuilSigmoide.h"
 #include "AILibrary/Generator/GeneratorNormalLaw.h"
@@ -22,7 +21,7 @@ int main() {
     int returnedVal = 0;
     do{
         std::cout<<"Projet RNA -- Paque Eric -- Loic Bourge"<<std::endl;
-        returnedVal= Demo::menu_choix({"Perceptron","Perceptron monocouche","Perceptron multicouche"},"Quitter");
+        returnedVal= Demo::menu_choix({"Perceptron","Perceptron monocouche","Perceptron multicouche","Exemples"},"Quitter");
         if(returnedVal!=-1){
             switch (returnedVal) {
                 case 0: {
@@ -109,6 +108,33 @@ int main() {
                             case 3: {
                                 ///Régression non-linéaire (table 4.17)
                                 Demo::regressionNonLineaireTable4_17();
+                                break;
+                            }
+                        }
+                    }
+                    returnedVal=-2;
+                    break;
+                }
+                case 3:{
+                    std::cout << "Exemple" << std::endl;
+                    returnedVal = Demo::menu_choix({"(Classification) NOR",
+                                                    "(Classification) NAND",
+                                                    "(Regression) Taille-poids"}, "Retour");
+                    if(returnedVal!=-1){
+                        switch (returnedVal) {
+                            case 0: {
+                                ///NOR
+                                Demo::Nor();
+                                break;
+                            }
+                            case 1: {
+                                ///NAND
+                                Demo::Nand();
+                                break;
+                            }
+                            case 2 : {
+                                ///Taille-poids
+                                Demo::taille_poids();
                                 break;
                             }
                         }

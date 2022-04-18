@@ -22,7 +22,6 @@ void PerceptronModel::fit(int maxIteration) {
                 double error = this->eta*(this->output[i][j].getNumericData() - y);
                 if(error!=0)
                 {
-                    std::cout<<"On corrige"<<std::endl;
                     this->correction(this->entry[i],error);
                     nbError++;
                 }
@@ -30,7 +29,6 @@ void PerceptronModel::fit(int maxIteration) {
 
             this->debugSynapseWeight();
         }
-        std::cout<<"NBError = " << nbError<<std::endl;
         nbIter++;
     }
 

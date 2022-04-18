@@ -33,6 +33,9 @@ public:
     static void classification3ClassesNonLineairementSeparableTable4_14();
     static void regressionNonLineaireTable4_17();
 
+    static void Nor();
+    static void Nand();
+    static void taille_poids();
 
     static int menu_choix(std::vector<std::string>, std::string);
     static double choix_emoy(std::vector<double>);

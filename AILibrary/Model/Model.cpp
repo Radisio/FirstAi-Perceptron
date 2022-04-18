@@ -167,11 +167,3 @@ Seuil *Model::getSeuilLastLayer() {
     int lastLayer = this->layers.size()-1;
     return this->layers[lastLayer].getSeuilNeurones();
 }
-
-
-
-
-
-
-
-

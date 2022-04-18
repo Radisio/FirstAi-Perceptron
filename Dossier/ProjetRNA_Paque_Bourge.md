@@ -38,17 +38,11 @@ Nombre d'itérations maximum = 1000
 ####Classification de données non linéairement séparables
 #####Table 2.10
 ######Descente du gradient
-Eta = 0.0015
-Seuil minimum = 0.37
-Nombre d'itérations maximum = 1000
 <p align="center">
     <img src="Images/table_2_10_DG_plot.png"/>
 </p>
 
 ######Adaline
-Eta = 0.0015
-Seuil minimum = 0.375
-Nombre d'itérations maximum = 1000
 <p align="center">
     <img src="Images/table_2_10_Ada_plot.png"/>
 </p>
@@ -56,8 +50,6 @@ Nombre d'itérations maximum = 1000
 ####Régression linéaire
 #####Table 2.11
 ######Descente du gradient
-Eta = 0.000167
-Nombre d'itérations maximum = 4000
 <p align="center">
     <img src="Images/table_2_11_DG_plot.png"/>
 </p>
@@ -93,5 +85,12 @@ Nombre d'itérations maximum = 8000
 
 ##Autres exemples
 ###Classification
+####Opérateur logique NOR
 
 ###Régression
+####Régression linéaire simple
+Exemple issu du cours de statistique de monsieur Vilvens.
+Le service national de santé du Burgerland se demande si, parmi les membres adultes de la population, il existe
+une relation entre leur taille en pouce et leur poids en livres.
+
+

@@ -97,6 +97,7 @@ std::vector<double> Util::dataTabToDoubleVector(std::vector<std::vector<Data>> t
     std::vector<double> returnedVector;
     for(int i =0;i<size;i++)
     {
+        std::cout<<"tData["<<i<<"]["<<index<<"]= "<< tData[i][index].getNumericData()<<std::endl;
         returnedVector.push_back(tData[i][index].getNumericData());
     }
     return returnedVector;

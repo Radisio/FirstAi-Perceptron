@@ -4,6 +4,8 @@
 
 #include "SciplotHelper.h"
 
+#include <utility>
+
 Plot SciplotHelper::drawBoundariesDecisionLines(std::vector<double> x, std::vector<double> y, std::vector<std::vector<double>> outputs, Model * model, std::string title) {
     std::cout<<"Draw"<<std::endl;
     Plot plot;
@@ -13,6 +15,8 @@ Plot SciplotHelper::drawBoundariesDecisionLines(std::vector<double> x, std::vect
     int nbOutput = outputs[0].size();
     double maxX = Util::findMax(x);
     double minX = Util::findMin(x);
+    double maxY = Util::findMax(y);
+    double minY = Util::findMin(y);
     int nbEntries = x.size();
     std::vector<std::vector<double>> synapses = model->getSynapseLastLayer();
     int nbNeurones = synapses.size();
@@ -35,9 +39,7 @@ Plot SciplotHelper::drawBoundariesDecisionLines(std::vector<double> x, std::vect
         xClassified.emplace_back();
         yClassified.emplace_back();
     }
-    std::cout<<"ICI"<<std::endl;
     Seuil* seuil = model->getSeuilLastLayer();
-    std::cout<<"LA"<<std::endl;
 
     if(nbOutput>1) {
         for (int i = 2; i < nbOutput; i++) {
@@ -62,6 +64,7 @@ Plot SciplotHelper::drawBoundariesDecisionLines(std::vector<double> x, std::vect
     else{
         for(int i = 0;i<nbEntries;i++)
         {
+            std::cout<<"Output ["<<i<<"][0] = " << outputs[i][0]<<std::endl;
             if(seuil->isActive(outputs[i][0])){
                 xClassified[0].push_back(x[i]);
                 yClassified[0].push_back(y[i]);
@@ -77,12 +80,12 @@ Plot SciplotHelper::drawBoundariesDecisionLines(std::vector<double> x, std::vect
             plot.drawPoints(vX, vY).pointType(0).label("Inputs class : " + std::to_string(i));
         }
     }
-    plot.legend().title(title).atOutsideBottom();
+    plot.legend().title(std::move(title)).atOutsideBottom();
 
     return plot;
 }
 
-Plot SciplotHelper::drawBoundariesDecisionZones(std::vector<double> x, std::vector<double> y, Model * model,std::string title) {
+Plot SciplotHelper::drawBoundariesDecisionZones(std::vector<double> x, std::vector<double> y, std::vector<std::vector<double>> outputs, Model * model,std::string title) {
     double maxX = Util::findMax(x);
     double maxY = Util::findMax(y);
     double minX = Util::findMin(x);
@@ -103,9 +106,10 @@ Plot SciplotHelper::drawBoundariesDecisionZones(std::vector<double> x, std::vect
         vY.push_back({});
     }
     Seuil* seuil = model->getSeuilLastLayer();
+
+    std::cout<<"X size : " << x.size()<<std::endl;
     if(nbOutput==1)
     {
-        nbOutput++;
         vX.push_back({});
         vY.push_back({});
 
@@ -147,16 +151,66 @@ Plot SciplotHelper::drawBoundariesDecisionZones(std::vector<double> x, std::vect
             }
         }
     }
+    /// Plotting entries
+    /*Vec tmpX(std::valarray<double>(x.data(), x.size()));
+    Vec tmpY(std::valarray<double>(y.data(), y.size()));
+    plot.drawPoints(tmpX, tmpY).label("Entree");*/
+    std::vector<std::vector<double>> xClassified, yClassified;
+    int nbEntries = x.size();
     Plot plot;
-    for(int i = 0;i<nbOutput;i++)
+
+    for(int i = 0;i<2;i++)
+    {
+        xClassified.emplace_back();
+        yClassified.emplace_back();
+    }
+
+    ///Plotting area
+    int nbOutputTmp = nbOutput==1?nbOutput+1:nbOutput;
+    for(int i = 0;i<nbOutputTmp;i++)
     {
         Vec tmpX(std::valarray<double>(vX[i].data(), vX[i].size()));
         Vec tmpY(std::valarray<double>(vY[i].data(), vY[i].size()));
         plot.drawPoints(tmpX, tmpY).label("Zone : " + std::to_string(i));
     }
-    Vec tmpX(std::valarray<double>(x.data(), x.size()));
-    Vec tmpY(std::valarray<double>(y.data(), y.size()));
-    plot.drawPoints(tmpX, tmpY).label("Entree");
+    if(nbOutput>1) {
+        for (int i = 2; i < nbOutput; i++) {
+            xClassified.emplace_back();
+            yClassified.emplace_back();
+        }
+        for (int i = 0; i < nbEntries; i++) {
+            for (int j = 0; j < nbOutput; j++) {
+                if (seuil->isActive(outputs[i][j])) {
+                    xClassified[j].push_back(x[i]);
+                    yClassified[j].push_back(y[i]);
+                    break;
+                }
+            }
+        }
+        for (int i = 0; i < nbOutput; i++) {
+            Vec vX((std::valarray<double>(xClassified[i].data(), xClassified[i].size())));
+            Vec vY(std::valarray<double>(yClassified[i].data(), yClassified[i].size()));
+            plot.drawPoints(vX, vY).pointType(0).label("Inputs class : " + std::to_string(i));
+        }
+    }
+    else{
+        for(int i = 0;i<nbEntries;i++)
+        {
+            if(seuil->isActive(outputs[i][0])){
+                xClassified[0].push_back(x[i]);
+                yClassified[0].push_back(y[i]);
+            }
+            else{
+                xClassified[1].push_back(x[i]);
+                yClassified[1].push_back(y[i]);
+            }
+        }
+        for(int i =0;i<2;i++) {
+            Vec vX(std::valarray<double>(xClassified[i].data(), xClassified[i].size()));
+            Vec vY(std::valarray<double>(yClassified[i].data(), yClassified[i].size()));
+            plot.drawPoints(vX, vY).pointType(0).label("Inputs class : " + std::to_string(i));
+        }
+    }
     plot.xlabel("x");
     plot.ylabel("y");
     plot.legend().title(title).atOutsideBottom();
@@ -166,6 +220,8 @@ Plot SciplotHelper::drawBoundariesDecisionZones(std::vector<double> x, std::vect
 Plot SciplotHelper::drawRegressionCurve(std::vector<double> x, std::vector<double> y, Model * model, std::string title) {
     double maxX = Util::findMax(x);
     double minX = Util::findMin(x);
+    double minY = Util::findMin(y);
+    double maxY = Util::findMax(y);
     //Vec vecX = linspace(minX-1, maxX+1,100);
     Seuil* seuil = model->getSeuilLastLayer();
     size_t size = x.size();
@@ -181,6 +237,9 @@ Plot SciplotHelper::drawRegressionCurve(std::vector<double> x, std::vector<doubl
         yPredict.push_back(output[0].getNumericData());
     }
     Plot plot;
+    plot.xrange(minX-10,maxX+1);
+    plot.yrange(minY-1,maxY+1);
+
     Vec tmpX(std::valarray<double>(x.data(), x.size()));
 
     Vec yVecPredict(std::valarray<double>(yPredict.data(),yPredict.size()));

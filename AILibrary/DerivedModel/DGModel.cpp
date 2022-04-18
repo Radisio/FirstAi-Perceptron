@@ -39,24 +39,18 @@ void DGModel::fit(int maxIteration) {
         errorBool = false;
         std::vector<Data> yVec;
         for(int i = 0;i<nbExemple;i++) {
-            std::cout<<"Before"<<std::endl;
             yVec = this->evaluateOutput(this->entry[i]);
-            std::cout<<"After"<<std::endl;
             errorVec.clear();
             for (int j = 0; j < nbOutput; j++) {
                 //double y = this->evaluateOutput(this->entry[i])[j].getNumericData();
                 double error = this->output[i][j].getNumericData() - yVec[j].getNumericData();
+                errorVec.push_back(error);
                 //this->layers[lastLayer].setDwToNeurone(this->entry[i], this->eta, error,j);
                 errorBool = errorBool || seuil->seuiledValue(yVec[j].getNumericData()) != this->output[i][j].getNumericData();
-                std::cout<<"Sortie attendue : " << this->output[i][j].getData()<<" donc errorBool = " << errorBool<<std::endl;
-                std::cout << "Sortie : " << yVec[j].getNumericData() << " sortie attendue : " << this->output[i][j].getData() << std::endl;
                 emoy[j] += (error * error)/2;
-                std::cout<<"BBBLLBHBLBL"<<std::endl;
-                errorVec.push_back(error);
             }
             setDwToLayers(this->entry[i],errorVec);
         }
-        std::cout<<"On corrige"<<std::endl;
         ///Correction des poids synaptiques
         for(int i = 0;i<nbLayer;i++)
         {
@@ -69,17 +63,13 @@ void DGModel::fit(int maxIteration) {
         }
         emoy= divideEmoyByNbExemple(emoy,nbExemple);
         nbIter++;
-        std::cout<<"SeuilMin" << this->seuilMin<<std::endl;
         for(int i = 0;i<emoy.size();i++)
         {
             std::cout<<"Emoy ["<<i<<"] : " << emoy[i]<<std::endl;
         }
-        debugSynapseWeight();
+       // debugSynapseWeight();
         loop = this->stopWhenNoError?errorBool:!allEmoyBelowSeuil(emoy) ;
-        std::cout<<"Loop = " << loop<<std::endl;
-        std::cout<<"AllEmoyBelowSeuil : " << allEmoyBelowSeuil(emoy)<<std::endl;
         std::cout<<"NbIter = " << nbIter<<std::endl;
-        std::cout<<"Error = " << errorBool<<std::endl;
     }while(loop&& nbIter<maxIteration);
 
 }
@@ -119,7 +109,6 @@ std::vector<double> DGModel::setEmoy0(int size) {
 void DGModel::correction(std::vector<double> errorVec) {
     int lastLayer = this->layers.size()-1;
     if(this->multiLayer){
-        std::cout<<"MULTILAYER"<<std::endl;
         int nbLayer = this->layers.size();
         /// Calcul signal neurone couche sortie
         int nbNeurone;
@@ -129,8 +118,6 @@ void DGModel::correction(std::vector<double> errorVec) {
             double z = this->layers[lastLayer].getLastOutputNeurone(i).getNumericData();
             signalsOutputLayer.push_back(errorVec[i] * z * (1 - z));
         }
-        std::cout<<"ON A CALCULE LES SIGNAUX DE LA COUCHE DE SORTIE"<<std::endl;
-
         ///Calcul signaux couches cachée
         int firstHiddenLayer = lastLayer-1;
         std::vector<std::vector<double>> signalLayers;
@@ -181,21 +168,14 @@ void DGModel::correction(std::vector<double> errorVec) {
 
         for(int i=0;i<nbNeurone;i++)
         {
-            std::cout<<"Layer ["<<lastLayer<<"]"<<std::endl;
-            std::cout<<"OutputLayersNeurones ["<<0<<"] size = " << outputLayersNeurones[0].size()<<std::endl;
             this->layers[lastLayer].correction(outputLayersNeurones[0],this->eta, signalLayers[0][i],i);
         }
-        std::cout<<"ON A CORRIGE LES POIDS DE LA COUCHE DE SORTIE"<<std::endl;
-        std::cout<<"NbLayer = " << lastLayer<<std::endl;
+
         for(int i =lastLayer-1,k=1;i>=0;i--,k++)
         {
             nbNeurone = this->layers[i].getNbNeurone();
             for(int j =0;j<nbNeurone;j++)
             {
-                std::cout<<"TEST"<<std::endl;
-                std::cout<<"Layer ["<<i<<"]"<<std::endl;
-
-                std::cout<<"OutputLayersNeurones ["<<k<<"] size = " << outputLayersNeurones[k].size()<<std::endl;
                 this->layers[i].correction(outputLayersNeurones[k],this->eta,signalLayers[k][j],j);
             }
         }
@@ -216,7 +196,6 @@ void DGModel::setDwToLayers(std::vector<Data> entry,std::vector<double> errorVec
     int lastLayer = this->layers.size()-1;
     if(this->multiLayer)
     {
-        std::cout<<"MULTILAYER"<<std::endl;
         int nbLayer = this->layers.size();
         /// Calcul signal neurone couche sortie
         int nbNeurone;
@@ -226,8 +205,6 @@ void DGModel::setDwToLayers(std::vector<Data> entry,std::vector<double> errorVec
             double z = this->layers[lastLayer].getLastOutputNeurone(i).getNumericData();
             signalsOutputLayer.push_back(errorVec[i] * z * (1 - z));
         }
-        std::cout<<"ON A CALCULE LES SIGNAUX DE LA COUCHE DE SORTIE"<<std::endl;
-
         ///Calcul signaux couches cachée
         int firstHiddenLayer = lastLayer-1;
         std::vector<std::vector<double>> signalLayers;
@@ -284,7 +261,7 @@ void DGModel::setDwToLayers(std::vector<Data> entry,std::vector<double> errorVec
     else{
         int nbNeurone = this->layers[lastLayer].getNbNeurone();
         for(int i = 0;i<nbNeurone;i++)
-            this->layers[lastLayer].setDwToNeurone(this->entry[i], this->eta, errorVec[i],i);
+            this->layers[lastLayer].setDwToNeurone(entry, this->eta, errorVec[i],i);
 
     }
 

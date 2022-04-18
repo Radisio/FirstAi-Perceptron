@@ -13,10 +13,8 @@ Layer::Layer(int nbNeurone, Seuil* seuil, Generator* generator) {
     this->nbNeurone = nbNeurone;
     for(int i = 0; i<nbNeurone;i++)
     {
-        std::cout<<"Creation neurone"<<std::endl;
         this->neurones.push_back(new Neurone(seuil, generator));
     }
-    std::cout<<"OUT"<<std::endl;
 }
 
 void Layer::setNbSynapse(int nbSynapse) {
@@ -133,8 +131,6 @@ std::vector<Data> Layer::getLastOutputNeurones() {
 }
 
 Data Layer::getLastOutputNeurone(int i) {
-    std::cout<<"I = " << i << " nbNeurone = " << this->neurones.size()<<std::endl;
-    std::cout<<"test : " << this->neurones[i]->getLastOutput().getData()<<std::endl;
     return this->neurones[i]->getLastOutput();
 }
 
