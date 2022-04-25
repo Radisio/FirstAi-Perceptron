@@ -88,7 +88,8 @@ void AdalineModel::correction(std::vector<Data> line, std::vector<double> errorV
                 {
                     tmp+=signalLayers[k][b]*synapses[b];
                 }
-                signalHiddenLayer.push_back((yc*(1-yc))*(tmp));
+                double derive = getDerive(i,yc);
+                signalHiddenLayer.push_back(derive*tmp);
             }
             signalLayers.push_back(signalHiddenLayer);
             outputLayersNeurones.push_back(outputNeurones);
