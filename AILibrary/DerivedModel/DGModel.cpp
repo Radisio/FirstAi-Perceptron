@@ -3,7 +3,6 @@
 //
 
 #include "DGModel.h"
-#include "../ModelBase/WGeneratorFunction.h"
 
 DGModel::DGModel(std::string filename) : Model(filename) {
 
@@ -140,7 +139,8 @@ void DGModel::correction(std::vector<double> errorVec) {
                 synapses.clear();
                 double yc = this->layers[i].getLastOutputNeurone(j).getNumericData();
                 outputNeurones.push_back(this->layers[i].getLastOutputNeurone(j));
-                // phi'(k_c)= y_c(1-yc)
+                // phi'(k_c)= y_c(1-yc) (sigmoide)
+                // phi'(x) = 1-phi²(x) (tangeante hyperbolique)
                 // delta_j(C) = phi'(k_j)( delta_1(C-1)*w1+delta_2*w2+...+delta_n*w_n)
                 //synapses=this->layers[i].getSynapseNeurone(j);
                 synapses = Util::getAllXFromTab(synapsesLayer,j);
@@ -149,7 +149,8 @@ void DGModel::correction(std::vector<double> errorVec) {
                 {
                     tmp+=signalLayers[k][a]*synapses[a];
                 }
-                signalHiddenLayer.push_back((yc*(1-yc))*(tmp));
+                double derive = getDerive(i,yc);
+                signalHiddenLayer.push_back(derive*tmp);
             }
             signalLayers.push_back(signalHiddenLayer);
             outputLayersNeurones.push_back(outputNeurones);
@@ -203,7 +204,9 @@ void DGModel::setDwToLayers(std::vector<Data> entry,std::vector<double> errorVec
         std::vector<double> signalsOutputLayer;
         for(int i = 0;i<nbNeurone;i++) {
             double z = this->layers[lastLayer].getLastOutputNeurone(i).getNumericData();
-            signalsOutputLayer.push_back(errorVec[i] * z * (1 - z));
+            double derive = getDerive(lastLayer,z);
+            signalsOutputLayer.push_back(errorVec[i]*derive);
+            //signalsOutputLayer.push_back(errorVec[i] * z * (1 - z));
         }
         ///Calcul signaux couches cachée
         int firstHiddenLayer = lastLayer-1;
@@ -230,13 +233,14 @@ void DGModel::setDwToLayers(std::vector<Data> entry,std::vector<double> errorVec
                 // phi'(k_c)= y_c(1-yc)
                 // delta_j(C) = phi'(k_j)( delta_1(C-1)*w1+delta_2*w2+...+delta_n*w_n)
                 //synapses=this->layers[i].getSynapseNeurone(j);
-                synapses = Util::getAllXFromTab(synapsesLayer,j);
+                synapses = Util::getAllXFromTab(synapsesLayer,j+1);
                 size = synapses.size();
                 for(int b = 0;b<size;b++)
                 {
-                    tmp+=signalLayers[k][a]*synapses[a];
+                    tmp+=signalLayers[k][b]*synapses[b];
                 }
-                signalHiddenLayer.push_back((yc*(1-yc))*(tmp));
+                double derive = getDerive(i,yc);
+                signalHiddenLayer.push_back(derive*tmp);
             }
             signalLayers.push_back(signalHiddenLayer);
             outputLayersNeurones.push_back(outputNeurones);

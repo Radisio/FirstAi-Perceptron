@@ -17,6 +17,14 @@ Layer::Layer(int nbNeurone, Seuil* seuil, Generator* generator) {
     }
 }
 
+Layer::Layer(int nbNeurone, Seuil* seuil, std::vector<std::vector<double>> synapticWeight){
+    this->nbNeurone = nbNeurone;
+    for(int i = 0; i<nbNeurone;i++)
+    {
+        this->neurones.push_back(new Neurone(synapticWeight[i],seuil));
+    }
+}
+
 void Layer::setNbSynapse(int nbSynapse) {
     for(int i = 0; i<nbNeurone;i++)
     {
@@ -47,6 +55,15 @@ void Layer::debugSynapseWeight(std::ostream* fp) {
         {
             *fp<<"w"<<j<<":"<<synapses[j]<<std::endl;
         }
+        *fp<<"------------------------------------"<<std::endl;
+    }
+}
+
+void Layer::debugLastOutputNeurones(std::ostream* fp) {
+    for (int i =0;i<this->nbNeurone;i++)
+    {
+        *fp<<"Neurone (" << i <<")"<<std::endl;
+        *fp<<"Output : " << this->neurones[i]->getLastOutput().getNumericData()<<std::endl;
         *fp<<"------------------------------------"<<std::endl;
     }
 }
@@ -158,6 +175,7 @@ std::vector<double> Layer::getSeuilInfos() {
     Seuil* s = this->neurones[0]->getSeuil();
     return SeuilUtil::seuilToInt(s);
 }
+
 
 
 

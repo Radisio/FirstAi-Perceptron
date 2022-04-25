@@ -432,14 +432,13 @@ void Demo::operateurLogiqueXorTable4_3() {
         fitOrModel = menu_choix({"Fit","Resultat"},"Retour");
     if(fitOrModel==-1)
         return;
+    double emoy = determinationEmoy({0.0678,0.05},{2,3},nbNeuroneCoucheCache);
     if(fitOrModel==0) {
-        //2->emoy 0.087 eta 1.25
-        //2 -> emoy 0.0943 eta 1.2
-        model = new DGModel(entry, layers, output, 1.2,0.0943);
+        model = new DGModel(entry, layers, output, 0.8, emoy);
         model->initNbSynapticWeight();
         model->debugLog();
         model->debugSynapseWeight();
-        model->fit(4000);
+        model->fit(6000);
         model->debugSynapseWeight();
         model->save(std::string(SAVED_MODEL_PATH)+"DG_OperateurLogiqueXORTable4_3_"+ std::to_string(nbNeuroneCoucheCache)+".csv");
 
@@ -453,7 +452,7 @@ void Demo::operateurLogiqueXorTable4_3() {
     Plot plot = SciplotHelper::drawBoundariesDecisionZones(x,y,classes,model,"Operateur logique XOR (Descente du gradient) (Table 4.3)");
     plot.show();
     plot.save("../SavedPlot/DGtable4_3_plot_"+ std::to_string(nbNeuroneCoucheCache)+".png");
-
+    delete model;
 }
 
 void Demo::classification2ClassesNonLineairementSeparableTable4_12() {
@@ -463,10 +462,10 @@ void Demo::classification2ClassesNonLineairementSeparableTable4_12() {
     int nbNeuroneCoucheCache = choix_nb_neurones({1,2,3,5,10,20},"Retour");
     if(nbNeuroneCoucheCache==-1)
         return;
-    double emoy = determinationEmoy({0.1,0.05,0.001,0.001,0.001},{1,2,3,5,10,20},nbNeuroneCoucheCache);
+    double emoy = determinationEmoy({0.1,0.05,0.001,0.001,0.001,0.001},{1,2,3,5,10,20},nbNeuroneCoucheCache);
     std::vector<Layer> layers;
     layers.push_back(Layer(nbNeuroneCoucheCache,new SeuilSigmoide(1), new GeneratorNormalLaw(0,1)));
-    layers.push_back(Layer(2, new SeuilSigmoide(1), new GeneratorNormalLaw(0,1)));
+    layers.push_back(Layer(1, new SeuilSigmoide(1), new GeneratorNormalLaw(0,1)));
     Model* model;
     bool file_exist;
     int fitOrModel = 0;
@@ -519,7 +518,7 @@ void Demo::classification3ClassesNonLineairementSeparableTable4_14() {
         return;
     if(fitOrModel==0) {
         ///10->0.0022 eta1.2
-        model = new AdalineModel(entry, layers, output, 1.2);
+        model = new AdalineModel(entry, layers, output, 1.2,emoy);
         model->initNbSynapticWeight();
         model->debugLog();
         model->debugSynapseWeight();
@@ -532,7 +531,7 @@ void Demo::classification3ClassesNonLineairementSeparableTable4_14() {
     std::vector<double> x = Util::dataTabToDoubleVector(entry, 0);
     std::vector<double> y = Util::dataTabToDoubleVector(entry, 1);
     std::vector<std::vector<double>> classes = Util::dataTabToDouble(output);
-    Plot plot = SciplotHelper::drawBoundariesDecisionZones(x,y,classes,model,"Classification 3 classes (Zones) (Adaline) (Table 4.14)");
+    Plot plot = SciplotHelper::drawBoundariesDecisionZones(x,y,classes,model,"");
     plot.show();
     plot.save("../SavedPlot/ADAtable_4_14_"+ std::to_string(nbNeuroneCoucheCache)+"_plot.png");
 }
@@ -542,7 +541,7 @@ void Demo::regressionNonLineaireTable4_17() {
     if(nbNeuroneCoucheCache==-1)
         return;
     std::vector<Layer> layers;
-    layers.push_back(Layer(nbNeuroneCoucheCache,new SeuilTangeanteHyperbolique(), new GeneratorNormalLaw(0,1)));
+    layers.push_back(Layer(nbNeuroneCoucheCache,new SeuilTangeanteHyperbolique, new GeneratorNormalLaw(0,1)));
     layers.push_back(Layer(1, new SeuilIdentite(), new GeneratorNormalLaw(0,1)));
     Dataset data("../datasetTest/table_4_17.csv", false, ",", '.');
     std::vector<std::vector<Data>> entry = data.getColumn(0);
@@ -559,7 +558,7 @@ void Demo::regressionNonLineaireTable4_17() {
     if(fitOrModel==-1)
         return;
     if(fitOrModel==0) {
-        model = new DGModel(entry, layers, output, 0.01, emoy);
+        model = new DGModel(entry, layers, output, 0.001,0.04);
         model->initNbSynapticWeight();
         model->debugLog();
         model->debugSynapseWeight();
@@ -575,7 +574,7 @@ void Demo::regressionNonLineaireTable4_17() {
     Plot plot = SciplotHelper::drawRegressionCurve(x,y,model,"Régression non linéaire (Descente du Gradient) (Table 4_17)");
     plot.show();
     plot.save("../SavedPlot/DGtable_4_17_plot_"+ std::to_string(nbNeuroneCoucheCache)+".png");
-
+    delete model;
 }
 
 void Demo::Nor() {
@@ -686,7 +685,30 @@ void Demo::taille_poids() {
     plot.save("../SavedPlot/Adataille_poids_plot.png");
     delete model;
 }
+void Demo::premierExemple1Iteration() {
+    int returnedVal = menu_choix({"Descente du gradient","Adaline"},"Retour");
+    if(returnedVal==-1)
+        return;
+    Dataset data("../datasetTest/table_1_iteration.csv", false, ",", '.');
+    std::vector<std::vector<Data>> entry = data.getColumns(0,2);
+    std::vector<std::vector<Data>> output = data.getColumns(3,5);
+    std::vector<Layer> layers({{Layer(2, new SeuilSigmoide(1), {{0,0.1,0.15,0.05},{0,0.12,0.18,0.08}})},
+                              {Layer(3, new SeuilSigmoide(1), {{0,0.1,0.14},{0,0.125,0.21},{0,0.13,0.07}})}});
 
+    Model* model;
+    if(returnedVal==0)
+        model = new DGModel(entry, layers,output,1);
+    else
+        model = new AdalineModel(entry, layers,output,1);
+
+    model->debugLog();
+    model->debugSynapseWeight();
+    model->fit(1);
+    std::cout<<"Ici"<<std::endl;
+    model->debugSynapseWeight();
+    model->debugLastOutputNeurones();
+    delete model;
+}
 int Demo::menu_choix(std::vector<std::string> choices, std::string leaveBackOption="Quitter")
 {
     int returnedVal;
@@ -745,5 +767,7 @@ int Demo::getIndex(std::vector<int> vec, int element) {
     }
     return -1;
 }
+
+
 
 

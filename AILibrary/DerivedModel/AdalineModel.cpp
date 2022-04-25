@@ -51,9 +51,10 @@ void AdalineModel::correction(std::vector<Data> line, std::vector<double> errorV
         std::vector<double> signalsOutputLayer;
         for(int i = 0;i<nbNeurone;i++) {
             double z = this->layers[lastLayer].getLastOutputNeurone(i).getNumericData();
-            signalsOutputLayer.push_back(errorVec[i] * z * (1 - z));
-
+            double derive = getDerive(lastLayer,z);
+            signalsOutputLayer.push_back(errorVec[i] *derive);
         }
+
         ///Calcul signaux couches cachée
         int firstHiddenLayer = lastLayer-1;
         std::vector<std::vector<double>> signalLayers;
@@ -79,11 +80,13 @@ void AdalineModel::correction(std::vector<Data> line, std::vector<double> errorV
                 // phi'(k_c)= y_c(1-yc)
                 // delta_j(C) = phi'(k_j)( delta_1(C-1)*w1+delta_2*w2+...+delta_n*w_n)
                 //synapses=this->layers[i].getSynapseNeurone(j);
-                synapses = Util::getAllXFromTab(synapsesLayer,j);
+
+                synapses = Util::getAllXFromTab(synapsesLayer,j+1);
+                //synapses = this->layers[i].getSynapseNeurone(j);
                 size = synapses.size();
                 for(int b = 0;b<size;b++)
                 {
-                    tmp+=signalLayers[k][a]*synapses[a];
+                    tmp+=signalLayers[k][b]*synapses[b];
                 }
                 signalHiddenLayer.push_back((yc*(1-yc))*(tmp));
             }
@@ -91,8 +94,6 @@ void AdalineModel::correction(std::vector<Data> line, std::vector<double> errorV
             outputLayersNeurones.push_back(outputNeurones);
         }
         outputLayersNeurones.push_back(line);
-
-
         ///Correction
             /// Couche de sortie
         nbNeurone = this->layers[lastLayer].getNbNeurone();
@@ -179,6 +180,8 @@ bool AdalineModel::allEmoyBelowSeuil(std::vector<double> emoy) {
     int emoySize = emoy.size();
     for(int i =0;i<emoySize;i++)
     {
+        std::cout<<"Emoy ["<<i<<"] = " << emoy[i]<<std::endl;
+        std::cout<<"SeuilMin : " << this->seuilMin<<std::endl;
         if(emoy[i]>=this->seuilMin)
         {
             return false;

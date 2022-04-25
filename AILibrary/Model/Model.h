@@ -4,7 +4,8 @@
 
 #ifndef MYIALIBRARY_MODEL_H
 #define MYIALIBRARY_MODEL_H
-
+#include "../Seuil/SeuilSigmoide.h"
+#include "../Seuil/SeuilTangeanteHyperbolique.h"
 ///Contient les différentes couches de neurones et, lors de l'appel à la méthode fit, fait appels à ces différents neurones.
 
 ///Correction d'erreur propre au modèle
@@ -34,6 +35,7 @@ public:
 
     void initNbSynapticWeight();
     void debugSynapseWeight();
+    void debugLastOutputNeurones();
     virtual void correction(std::vector<Data>,double)=0;
     virtual void correction(std::vector<Data>, std::vector<double>)=0;
     virtual void fit(int=1000)=0;
@@ -44,6 +46,7 @@ public:
     bool modelValid();
     std::vector<std::vector<double>> getSynapseLastLayer();
     Seuil* getSeuilLastLayer();
+    double getDerive(int,double);
 
 
 

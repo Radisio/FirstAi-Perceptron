@@ -20,6 +20,7 @@ private:
 
 public:
     Layer(int, Seuil*, Generator*);
+    Layer(int, Seuil*, std::vector<std::vector<double>>);
     Layer(std::vector<Neurone*>);
     ~Layer();
     void setNbSynapse(int);
@@ -40,6 +41,7 @@ public:
     Seuil* getSeuilNeurones();
     std::vector<std::vector<double>> getDwAllNeurones();
     std::vector<double> getSeuilInfos();
+    void debugLastOutputNeurones(std::ostream *fp);
 };
 
 

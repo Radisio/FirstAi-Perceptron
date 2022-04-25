@@ -12,7 +12,7 @@
 #include "AILibrary/SciplotHelper/SciplotHelper.h"
 #include "AILibrary/DerivedModel/DGModel.h"
 #include "AILibrary/DerivedModel/AdalineModel.h"
-#define SAVED_MODEL_PATH "E:/ProjetPerso/MyIALibrary/SavedModel/"
+#define SAVED_MODEL_PATH "D:/MyIALibrary/SavedModel/"
 
 class Demo {
 public:
@@ -32,6 +32,7 @@ public:
     static void classification2ClassesNonLineairementSeparableTable4_12();
     static void classification3ClassesNonLineairementSeparableTable4_14();
     static void regressionNonLineaireTable4_17();
+    static void premierExemple1Iteration();
 
     static void Nor();
     static void Nand();

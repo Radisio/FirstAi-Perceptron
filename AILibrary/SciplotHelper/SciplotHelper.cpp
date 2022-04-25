@@ -80,8 +80,10 @@ Plot SciplotHelper::drawBoundariesDecisionLines(std::vector<double> x, std::vect
             plot.drawPoints(vX, vY).pointType(0).label("Inputs class : " + std::to_string(i));
         }
     }
-    plot.legend().title(std::move(title)).atOutsideBottom();
-
+    if(title.empty())
+        plot.legend().hide();
+    else
+        plot.legend().title(title).titleCenter().atOutsideBottom().displayHorizontal().displayExpandWidthBy(2);
     return plot;
 }
 
@@ -213,7 +215,10 @@ Plot SciplotHelper::drawBoundariesDecisionZones(std::vector<double> x, std::vect
     }
     plot.xlabel("x");
     plot.ylabel("y");
-    plot.legend().title(title).atOutsideBottom();
+    if(title.empty())
+        plot.legend().hide();
+    else
+        plot.legend().title(title).titleCenter().atOutsideBottom().displayHorizontal().displayExpandWidthBy(2);
     return plot;
 }
 
@@ -222,9 +227,11 @@ Plot SciplotHelper::drawRegressionCurve(std::vector<double> x, std::vector<doubl
     double minX = Util::findMin(x);
     double minY = Util::findMin(y);
     double maxY = Util::findMax(y);
-    //Vec vecX = linspace(minX-1, maxX+1,100);
+    Vec vecX = linspace(minX, maxX,100);
+    Vec vecY = linspace(minY,maxY,100);
+    std::cout<<"MinX = " <<minX << "MaxX = " << maxX;
     Seuil* seuil = model->getSeuilLastLayer();
-    size_t size = x.size();
+    size_t size = vecX.size();
     std::vector<double> yPredict;
     std::vector<Data> output;
     std::vector<Data> entry;
@@ -232,23 +239,27 @@ Plot SciplotHelper::drawRegressionCurve(std::vector<double> x, std::vector<doubl
     for(int i =0;i<size;i++)
     {
         entry.clear();
-        entry.push_back(Data(DATA_TYPE_NUMERIC,std::to_string(x[i])));
+        entry.push_back(Data(DATA_TYPE_NUMERIC,std::to_string(vecX[i])));
         output = model->predict(entry);
         yPredict.push_back(output[0].getNumericData());
+        std::cout<<"Pour X : " << vecX[i]<< " Y = " << output[0].getNumericData()<<std::endl;
     }
     Plot plot;
-    plot.xrange(minX-10,maxX+1);
-    plot.yrange(minY-1,maxY+1);
+    /*plot.xrange(minX-1,maxX+1);
+    plot.yrange(minY-1,maxY+1);*/
 
     Vec tmpX(std::valarray<double>(x.data(), x.size()));
-
+    std::cout<<"X size : " << x.size()<< " Ypredict size : " << yPredict.size()<<std::endl;
     Vec yVecPredict(std::valarray<double>(yPredict.data(),yPredict.size()));
-    plot.drawCurve(tmpX,yVecPredict).label("Regression curve");
+    plot.drawCurve(vecX,yVecPredict).label("Regression curve");
     plot.xlabel("x");
     plot.ylabel("y");
-    plot.legend().title(title).atOutsideBottom();
     Vec tmpY(std::valarray<double>(y.data(), y.size()));
     plot.drawPoints(tmpX, tmpY).label("Inputs");
+    if(title.empty())
+        plot.legend().hide();
+    else
+        plot.legend().title(title).titleCenter().atOutsideBottom().displayHorizontal().displayExpandWidthBy(2);
     return plot;
 }
 

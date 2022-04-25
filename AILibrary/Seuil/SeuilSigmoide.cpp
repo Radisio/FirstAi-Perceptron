@@ -24,3 +24,7 @@ int SeuilSigmoide::seuiledValue(double d) {
 std::vector<double> SeuilSigmoide::getInfo() {
     return std::vector<double>({this->c});
 }
+
+double SeuilSigmoide::getC() {
+    return this->c;
+}

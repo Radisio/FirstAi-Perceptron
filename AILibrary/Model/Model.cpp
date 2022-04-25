@@ -5,6 +5,7 @@
 #include <fstream>
 #include "Model.h"
 
+
 Model::Model(std::vector<std::vector<Data>> entry, std::vector<Layer> layers, std::vector<std::vector<Data>> output, double eta) {
     this->entry = entry;
     this->layers = layers;
@@ -59,6 +60,18 @@ void Model::debugSynapseWeight() {
         for (int i = 0; i < nbLayer; i++) {
             *this->fp << "Layer : " << i << std::endl;
             this->layers[i].debugSynapseWeight(this->fp);
+            *this->fp << "///////////////////////////////////" << std::endl;
+        }
+    }
+}
+void Model::debugLastOutputNeurones() {
+    if(this->fp!=NULL)
+    {
+        *this->fp<<"LastOutputNeurones"<<std::endl;
+        int nbLayer = this->layers.size();
+        for (int i = 0; i < nbLayer; i++) {
+            *this->fp << "Layer : " << i << std::endl;
+            this->layers[i].debugLastOutputNeurones(this->fp);
             *this->fp << "///////////////////////////////////" << std::endl;
         }
     }
@@ -167,3 +180,18 @@ Seuil *Model::getSeuilLastLayer() {
     int lastLayer = this->layers.size()-1;
     return this->layers[lastLayer].getSeuilNeurones();
 }
+
+double Model::getDerive(int i,double x) {
+    if(dynamic_cast<SeuilSigmoide*>(this->layers[i].getSeuilNeurones())!= nullptr) {
+        return dynamic_cast<SeuilSigmoide*>(this->layers[i].getSeuilNeurones())->getC()*x*(1-x);
+    }
+    if(dynamic_cast<SeuilTangeanteHyperbolique*>(this->layers[i].getSeuilNeurones())!= nullptr) {
+        return 1-(x*x);
+    }
+    if(dynamic_cast<SeuilIdentite*>(this->layers[i].getSeuilNeurones())!= nullptr) {
+        return 1;
+    }
+    return x;
+}
+
+

@@ -28,6 +28,7 @@ Seuil *SeuilUtil::intToSeuil(std::vector<double> infos) {
         case 4:
             return new SeuilTangeanteHyperbolique();
     }
+    return nullptr;
 }
 
 std::vector<double> SeuilUtil::seuilToInt(Seuil *s) {
