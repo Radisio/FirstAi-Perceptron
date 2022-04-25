@@ -558,7 +558,7 @@ void Demo::regressionNonLineaireTable4_17() {
     if(fitOrModel==-1)
         return;
     if(fitOrModel==0) {
-        model = new DGModel(entry, layers, output, 0.001,0.04);
+        model = new DGModel(entry, layers, output, 0.001,emoy);
         model->initNbSynapticWeight();
         model->debugLog();
         model->debugSynapseWeight();
